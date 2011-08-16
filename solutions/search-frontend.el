@@ -1,0 +1,11 @@
+(global-set-key (kbd "C-S-f") (lambda (string)
+  (interactive (list (read-from-minibuffer "Search in solution: ")))
+  (if (fboundp 'my-search-string-in-solution) 
+    (my-search-string-in-solution string)
+    (message "my-search-string-in-solution is not implemented"))))
+
+(global-set-key (kbd "C-S-M-f") (lambda (string)
+  (interactive (list (read-from-minibuffer "Search regexp in solution: ")))
+  (if (fboundp 'my-search-regexp-in-solution) 
+    (my-search-regexp-in-solution string)
+    (message "my-search-regexp-in-solution is not implemented"))))

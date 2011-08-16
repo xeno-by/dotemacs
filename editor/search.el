@@ -1,0 +1,20 @@
+(global-set-key (kbd "C-f") 'isearch-forward)
+(global-set-key (kbd "C-M-f") 'isearch-forward-regexp)
+
+(define-key isearch-mode-map (kbd "C-S-v") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "C-v") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "<S-insertchar>") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "<S-insert>") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "<paste>") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "<f18>") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "<menu-bar>") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "<edit>") 'isearch-yank-kill)
+(define-key isearch-mode-map (kbd "<paste>") 'isearch-yank-kill)
+
+;(define-key isearch-mode-map (kbd "<f3>") 'isearch-repeat-forward)
+;(define-key isearch-mode-map (kbd "<C-f3>") 'isearch-repeat-backward)
+;(define-key isearch-mode-map (kbd "<S-f3>") 'isearch-repeat-backward)
+(global-set-key (kbd "<f3>") 'isearch-repeat-forward)
+(global-set-key (kbd "<C-f3>") 'isearch-repeat-backward)
+(global-set-key (kbd "<S-f3>") 'isearch-repeat-backward)
+

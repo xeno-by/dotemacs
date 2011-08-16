@@ -1,0 +1,1 @@
+(setq next-error-highlight t)
