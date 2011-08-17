@@ -76,11 +76,11 @@
                 nil)))))
   (setq my-solution-grep-prev-string string)
   (set (make-local-variable 'my-solution-grep-local-string) string)
-  (let ((mode (if mode mode
-              (if (boundp 'my-solution-grep-local-mode) my-solution-grep-local-mode 
+  (let ((flavor (if flavor flavor
+              (if (boundp 'my-solution-grep-local-flavor) my-solution-grep-local-flavor 
               nil))))
-  (setq my-solution-grep-prev-mode mode)
-  (set (make-local-variable 'my-solution-grep-local-mode) mode)
+  (setq my-solution-grep-prev-flavor flavor)
+  (set (make-local-variable 'my-solution-grep-local-flavor) flavor)
   (let ((filter (if (stringp filter) filter
                 (if (boundp 'my-solution-grep-local-filter) my-solution-grep-local-filter 
                 (if (boundp 'my-solution-grep-prev-filter) my-solution-grep-prev-filter
@@ -98,14 +98,14 @@
 	;;		(substring (current-time-string) 0 19))
 	;;	command "\n")
   (insert (concat "Searching for: " (propertize string 'font-lock-face 'bold) "\n"))
-  (insert (concat "Search engine is: " (propertize (if (eq mode 'regexp) "egrep" "fgrep") 'font-lock-face 'bold) "\n"))
+  (insert (concat "Search engine is: " (propertize (if (eq flavor 'regexp) "egrep" "fgrep") 'font-lock-face 'bold) "\n"))
   (insert (concat "Searching in: " (propertize (if (and (stringp filter) (not (string= filter ""))) filter "all files") 'font-lock-face 'bold) "\n"))
   (insert (concat "Grep started at " (substring (current-time-string) 0 19) "\n"))
   (insert "\n")
 
   ;; xeno.by: composing the command that will perform the search
   (let ((find-command (find-files-in-solution-command filter)))
-  (let ((grep-command (if (eq mode 'regexp) "egrep --color=always" "fgrep --color=always")))
+  (let ((grep-command (if (eq flavor 'regexp) "egrep --color=always" "fgrep --color=always")))
   (let ((abbrev-command (solution-abbrev-string-command)))
   ;; todo. quote search string properly
   (setq command (concat find-command " | xargs -0 -e " grep-command " -nH '" string "' | " abbrev-command))

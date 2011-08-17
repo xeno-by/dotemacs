@@ -12,6 +12,9 @@
 (add-to-list 'desktop-globals-to-save 'ielm-history)
 (add-to-list 'desktop-globals-to-save 'goto-definition-bookmark-stack)
 (add-to-list 'desktop-globals-to-save 'goto-definition-bookmark-backup)
+(add-to-list 'desktop-globals-to-save 'my-solution-grep-prev-string)
+(add-to-list 'desktop-globals-to-save 'my-solution-grep-prev-flavor)
+(add-to-list 'desktop-globals-to-save 'my-solution-grep-prev-filter)
 
 ;; unused at the moment. possibly, will be helpful in the future
 ;(setq desktop-buffers-not-to-save (concat 
