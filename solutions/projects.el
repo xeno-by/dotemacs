@@ -55,5 +55,3 @@
             (setq result (caddr project))))))
     result))
 
-(load-file (concat emacs-root "/projects"))
-

@@ -2,7 +2,7 @@
 (add-to-list 'load-path (concat emacs-root "/libraries/ecb-2.40"))
 (require 'ecb)
 
-(load-all-files-from-dir (file-name-directory load-file-name) :exclude ("bootstrapper.el"))
+(load-all-files-from-dir (file-name-directory load-file-name) :exclude '("bootstrapper.el"))
 
 (load-file (concat emacs-root "/" "desktops" "/" "current.el"))
 (setq desktop-root (concat emacs-root "/" "desktops" "/" my-current-desktop))

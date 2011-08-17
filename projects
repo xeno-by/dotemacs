@@ -1,2 +1,0 @@
-(load-all-files-from-dir (concat emacs-root "/current"))
-
