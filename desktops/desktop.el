@@ -3,7 +3,7 @@
 (desktop-save-mode 1)
 (setq history-length 10000)
 
-(setq desktop-path (list emacs-root))
+(setq desktop-path (list desktop-root))
 (setq desktop-base-file-name "desktop")
 (setq desktop-base-lock-name "desktop.lock")
 

@@ -4,7 +4,6 @@
 ;(setq debug-on-error t)
 
 (load-file (concat (file-name-directory load-file-name) "/" "bootstrapper.el"))
-(load-all-files-from-emacs-root)
 
 ;; managed by emacs
 (custom-set-variables
