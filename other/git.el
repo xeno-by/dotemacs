@@ -38,3 +38,7 @@
 (global-set-key (kbd "C-S-l") (lambda ()
   (interactive)
   (vc-print-log)))
+
+(global-set-key (kbd "C-S-p") (lambda ()
+  (interactive)
+  (magit-push)))

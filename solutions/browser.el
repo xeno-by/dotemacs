@@ -2,6 +2,8 @@
 (add-hook 'ecb-directories-buffer-after-create-hook (lambda () (local-set-key (kbd "<C-f3>") 'isearch-repeat-backward)))
 (add-hook 'ecb-directories-buffer-after-create-hook (lambda () (local-set-key (kbd "<S-f3>") 'isearch-repeat-backward)))
 
+(global-set-key (kbd "<f9>") 'ecb-toggle-ecb-windows)
+
 (defun my-ecb-refresh ()
   (interactive)
   ;; note the "with-current-buffer" part
