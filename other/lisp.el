@@ -1,11 +1,25 @@
-(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+(global-set-key (kbd "<C-f1>") (lambda ()
+  (interactive)
+  (ielm)))
+(global-set-key (kbd "<C-f2>") (lambda ()
+  (interactive)
+  (switch-to-buffer "*Messages*")))
 
+;; C-h is rebound to replace
+(global-set-key (kbd "C-?") 'help-command)
+(define-key undo-tree-map (kbd "C-?") 'help-command)
 (global-set-key (kbd "C-/") 'describe-function)
 (define-key undo-tree-map (kbd "C-/") 'describe-function)
 (global-set-key (kbd "s-/") 'describe-key)
 (define-key undo-tree-map (kbd "s-/") 'describe-key)
+
+(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+
+;; so that it works even if I miss M in "M-:"
+(global-set-key (kbd "s-:") 'eval-expression)
+(global-set-key (kbd "C-:") 'eval-expression)
 
 (defun my-bookmark-set ()
   (let ((bookmark (if (buffer-file-name)

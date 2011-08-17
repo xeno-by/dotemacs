@@ -3,6 +3,15 @@
 (tabbar-mode 1)
 (set-face-attribute 'tabbar-default nil :background "gray90" :height 1.0)
 
+(global-set-key (kbd "<C-escape>") (lambda ()
+  (interactive)
+  (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name))
+    (bury-buffer))))
+(global-set-key (kbd "<s-escape>") (lambda ()
+  (interactive)
+  (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name))
+    (unbury-buffer))))
+
 (global-set-key (kbd "<C-tab>") (lambda () 
   (interactive) 
   (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name)) 

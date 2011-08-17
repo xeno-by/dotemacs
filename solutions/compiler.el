@@ -20,6 +20,8 @@
     (my-compile-master-project (buffer-file-name (current-buffer)))
     (message "my-compile-master-project is not implemented"))))
 
+(setq next-error-highlight t)
+
 (add-hook 'after-change-major-mode-hook (lambda ()
   (if (or (and (boundp 'display-tool-buffers-in-bottom-window) display-tool-buffers-in-bottom-window)
           (and (boundp 'display-tool-buffers-in-right-window) display-tool-buffers-in-right-window))

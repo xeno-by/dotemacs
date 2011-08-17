@@ -1,4 +1,5 @@
 desktop
+desktop.lock
 ac-comphist.dat
 auto-save-list/*
 *.elc

@@ -1,3 +1,6 @@
+(setq inhibit-startup-screen t)
+(setq initial-scratch-message nil)
+
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (global-set-key (kbd "<f10>") (lambda ()
