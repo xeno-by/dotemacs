@@ -23,8 +23,7 @@
 (setq next-error-highlight t)
 
 (add-hook 'after-change-major-mode-hook (lambda ()
-  (if (or (and (boundp 'display-tool-buffers-in-bottom-window) display-tool-buffers-in-bottom-window)
-          (and (boundp 'display-tool-buffers-in-right-window) display-tool-buffers-in-right-window))
+  (if (and (boundp 'tool-buffers-autofollow) tool-buffers-autofollow)
     (cond
      ((eq major-mode 'grep-mode)
       (next-error-follow-minor-mode 1))

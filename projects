@@ -9,6 +9,7 @@
 (add-project "pages" "/home/xeno_by/Projects/Delite/Delite Pages" nil)
 (add-project ".emacs" "/media/XENO/Dropbox/Software/Emacs" nil)
 
+(setq tool-buffers-autofollow nil)
 (setq display-tool-buffers-in-bottom-window t)
 (setq display-tool-buffers-in-right-window nil)
 
