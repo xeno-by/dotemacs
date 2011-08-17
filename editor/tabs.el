@@ -83,6 +83,7 @@
     ((string-equal "*sbt*" (buffer-name)) "Work")
     ((string-equal "*Find*" (buffer-name)) "Work")
     ((string-equal "*grep*" (buffer-name)) "Work")
+    ((string-equal "*delite*" (buffer-name)) "Work")
     ((string-equal "*vc" (substring (buffer-name) 0 3)) "Work")
     ((string-equal "*magit" (substring (buffer-name) 0 6)) "Work")
     ((string-equal "*" (substring (buffer-name) 0 1)) "Auxiliary")

@@ -19,6 +19,7 @@
   (dolist (f (directory-files emacs-root))
     (when (and 
            (file-directory-p (concat emacs-root "/" f))
+           (not (string= "current" f))
            (not (string= "libraries" f))
            (not (string= "." f))
            (not (string= ".." f)))

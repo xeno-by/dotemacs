@@ -106,9 +106,9 @@ and overlay is highlighted between MK and END-MK."
 (let ((left-window (left-window active-window)))
 (let ((target-window 
  (cond 
-  ((and (boundp 'display-tool-buffers-in-bottom-window) display-tool-buffers-in-bottom-window)
+  ((and (boundp 'tool-buffers-display-in-bottom-window) tool-buffers-display-in-bottom-window)
    (if top-window top-window active-window))
-  ((and (boundp 'display-tool-buffers-in-right-window) display-tool-buffers-in-right-window)
+  ((and (boundp 'tool-buffers-display-in-right-window) tool-buffers-display-in-right-window)
    (if left-window left-window active-window))
   (t
    active-window))))

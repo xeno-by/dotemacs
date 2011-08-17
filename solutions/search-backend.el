@@ -246,11 +246,11 @@
 (defun my-display-grep (target-buffer)
     (let ((target-window 
       (cond 
-        ((and (boundp 'display-tool-buffers-in-bottom-window) display-tool-buffers-in-bottom-window)
+        ((and (boundp 'tool-buffers-display-in-bottom-window) tool-buffers-display-in-bottom-window)
          (if (top-window) (active-window)
          (if (bottom-window) (bottom-window) 
          (split-window-vertically))))
-        ((and (boundp 'display-tool-buffers-in-right-window) display-tool-buffers-in-right-window)
+        ((and (boundp 'tool-buffers-display-in-right-window) tool-buffers-display-in-right-window)
          (if (left-window) (left-window)
          (if (right-window) (right-window) 
          (split-window-horizontally))))
