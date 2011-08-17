@@ -244,14 +244,18 @@
 
 (add-to-list 'special-display-buffer-names '("*grep*" my-display-grep))
 (defun my-display-grep (target-buffer)
-  (let ((target-window 
-    (cond 
-      ((and (boundp 'display-tool-buffers-in-bottom-window) display-tool-buffers-in-bottom-window)
-       (if (bottom-window) (bottom-window) (split-window-vertically)))
-      ((and (boundp 'display-tool-buffers-in-right-window) display-tool-buffers-in-right-window)
-       (if (right-window) (right-window) (split-window-horizontally)))
-      (t
-       (active-window)))))
+    (let ((target-window 
+      (cond 
+        ((and (boundp 'display-tool-buffers-in-bottom-window) display-tool-buffers-in-bottom-window)
+         (if (top-window) (active-window)
+         (if (bottom-window) (bottom-window) 
+         (split-window-vertically))))
+        ((and (boundp 'display-tool-buffers-in-right-window) display-tool-buffers-in-right-window)
+         (if (left-window) (left-window)
+         (if (right-window) (right-window) 
+         (split-window-horizontally))))
+        (t
+         (active-window)))))
   (let ((pop-up-windows t)) (set-window-buffer target-window target-buffer))
   (select-window target-window)
   target-window))
@@ -276,9 +280,18 @@
       ""))))
     (my-solution-grep string flavor filter)))))
 (add-hook 'grep-setup-hook (lambda ()
-  (define-key grep-mode-map (kbd "r") 'my-solution-grep-do-research)
   (define-key grep-mode-map (kbd "f") 'my-solution-grep-do-filter)
   (define-key grep-mode-map (kbd "n") 'my-solution-grep-do-filter))) ;; n = narrow
+
+(defadvice recompile (around override-recompile-for-solution-grep activate)
+  (if (boundp 'my-solution-grep-local-command)
+    (my-solution-grep-do-research)
+    ad-do-it))
+
+(defadvice revert-buffer (around override-revert-for-solution-grep activate)
+  (if (boundp 'my-solution-grep-local-command)
+    (my-solution-grep-do-research)
+    ad-do-it))
 
 (add-hook 'after-change-major-mode-hook (lambda ()
   (if (and (boundp 'tool-buffers-autofollow) tool-buffers-autofollow)

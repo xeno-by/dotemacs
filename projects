@@ -26,12 +26,25 @@
     (if target-buffer (kill-buffer target-buffer))
     (setq target-buffer (get-buffer-create "*sbt*"))
     (set-buffer target-buffer)
+    
+    ;; todo. this does not work. why?!
+    ;;(set (make-local-variable 'sbt-compile-name) sbt-name)
+    ;;(set (make-local-variable 'sbt-compile-path) sbt-path)
+    ;;(set (make-local-variable 'sbt-compile-status) nil)
+    (setq sbt-compile-name sbt-name)
+    (setq sbt-compile-path sbt-path)
+    (setq sbt-compile-status nil)
+
     (let ((target-window 
       (cond 
         ((and (boundp 'display-tool-buffers-in-bottom-window) display-tool-buffers-in-bottom-window)
-         (if (bottom-window) (bottom-window) (split-window-vertically)))
+         (if (top-window) (active-window)
+         (if (bottom-window) (bottom-window) 
+         (split-window-vertically))))
         ((and (boundp 'display-tool-buffers-in-right-window) display-tool-buffers-in-right-window)
-         (if (right-window) (right-window) (split-window-horizontally)))
+         (if (left-window) (left-window)
+         (if (right-window) (right-window) 
+         (split-window-horizontally))))
         (t
          (active-window)))))
     (let ((pop-up-windows t)) (set-window-buffer target-window target-buffer))
@@ -63,7 +76,7 @@
           ;;(message (number-to-string comint-output-index))
           (setq comint-output-index (+ comint-output-index 1))
           (setq comint-output-history "")
-          (if (boundp 'sbt-output-callback) (funcall sbt-output-callback lines))))))))
+          (if (and (boundp 'sbt-output-callback) (functionp sbt-output-callback)) (funcall sbt-output-callback lines))))))))
 
     (set (make-local-variable 'compilation-error-regexp-alist)
          '(("^\\[error\\] \\([_.a-zA-Z0-9/-]+[.]scala\\):\\([0-9]+\\):"
@@ -83,7 +96,25 @@
     (defvar sbt-minor-mode-map (make-keymap) "sbt-minor-mode keymap.")
     (define-key sbt-minor-mode-map (kbd "<tab>") 'compilation-next-error)
     (define-key sbt-minor-mode-map (kbd "<backtab>") 'compilation-previous-error)
-    (define-key sbt-minor-mode-map (kbd "<return>") 'compile-goto-error)
+    (define-key sbt-minor-mode-map (kbd "<return>") (lambda ()
+      (interactive)
+      (if (and (get-buffer-process (current-buffer)) (eq (point) (point-max)))
+        (comint-send-input)
+        (compile-goto-error))))
+    (define-key sbt-minor-mode-map (kbd "C-S-b") (lambda () 
+      (interactive) 
+      (sbt-compile sbt-compile-name sbt-compile-path)))
+    (define-key sbt-minor-mode-map (kbd "q") (lambda () 
+      (interactive)
+      (if (and (get-buffer-process (current-buffer)) (eq (point) (point-max)))
+        (insert "q")
+        (bury-buffer))))
+    (define-key sbt-minor-mode-map (kbd "g") (lambda () 
+      (interactive)
+      (if (and (get-buffer-process (current-buffer)) (eq (point) (point-max)))
+        (insert "g")
+        (sbt-compile sbt-compile-name sbt-compile-path))))
+
     (define-minor-mode sbt-minor-mode "Hosts keybindings for sbt interactions" nil " sbt" 'sbt-minor-mode-map :global nil)
     (sbt-minor-mode 1)
     (defun my-minibuffer-setup-hook () (sbt-minor-mode 0))
@@ -96,7 +127,8 @@
       (let ((failed nil))
         (dolist (line previous-step-output) (if (string-match "^\\[error\\]" line) (setq failed t)))
         (when failed
-          ;; I don't send EOF here, since otherwise SBT reports a "successful" compilation
+          (setq sbt-compile-status 'failed)
+          ;; I don't kill SBT here, since it might be useful to leverage its Scala console
           (setq sbt-output-callback nil)
           (setq sbt-compile-next-step nil)
           (goto-char (point-min))
@@ -109,10 +141,12 @@
               (insert next-step)
               (comint-send-input))
             (unless sbt-compilation-steps 
+              (setq sbt-compile-status 'success)
               (setq sbt-output-callback nil)
               (setq sbt-compile-next-step nil)
               (comint-send-eof)
-              (run-at-time 0 nil (lambda () (bury-buffer)))))))))
+              ;;(run-at-time 0 nil (lambda () (bury-buffer)))))))))
+              ))))))
     (setq sbt-output-callback sbt-compile-next-step)
 
     (setq sbt-compilation-steps 
@@ -123,6 +157,16 @@
         (if (string= sbt-name "virtualization-lms-core") "publish-local" nil)))
     (cd (sbt-project-root sbt-path))
     (comint-exec (current-buffer) "sbt" "sbt" nil nil)))
+
+(defadvice recompile (around override-recompile-for-sbt activate)
+  (if (string= (buffer-name) "*sbt*")
+    (sbt-compile sbt-compile-name sbt-compile-path)
+    ad-do-it))
+
+(defadvice revert-buffer (around override-revert-for-sbt activate)
+  (if (string= (buffer-name) "*sbt*")
+    (sbt-compile sbt-compile-name sbt-compile-path)
+    ad-do-it))
 
 ;; no need to advice kill-buffer since it calls bury-buffer internally
 (defadvice bury-buffer (around auto-kill-dedicated-sbt-window-on-bury activate)
