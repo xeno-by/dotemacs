@@ -14,7 +14,7 @@
   (let ((paths (mapcar (lambda (project) (project-path (car project))) projects)))
   (let ((path-argument (mapconcat (lambda (path) (concat "'" path "'")) paths " ")))
   ;; todo. quote include patterns properly
-  (let ((filter (if (stringp filter) filter "*")))
+  (let ((filter (if (and (stringp filter) (not (string= filter ""))) filter "*")))
   (let ((filter (if (string-match "^*/" filter) filter (concat "*/" filter))))
   (let ((include-paths (list filter)))
   (let ((include-argument (mapconcat (lambda (pattern) (concat " -path '" pattern "'")) include-paths " ")))

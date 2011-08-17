@@ -4,7 +4,7 @@
             (if (and (boundp 'my-solution-grep-prev-filter) 
                      (stringp my-solution-grep-prev-filter)
                      (not (string= my-solution-grep-prev-filter "")))
-              (concat my-solution-grep-prev-filter)
+               my-solution-grep-prev-filter
               "all files")
             (if (and (boundp 'my-solution-grep-prev-string) 
                      (stringp my-solution-grep-prev-string)

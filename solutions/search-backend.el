@@ -1,9 +1,8 @@
-(defun my-search-string-in-solution (string) (my-search-string-in-solution-internal string 'plain nil))
+(defun my-search-string-in-solution (string) (my-solution-grep string 'plain nil))
 
-(defun my-search-regexp-in-solution (string) (my-search-string-in-solution-internal string 'regexp nil))
+(defun my-search-regexp-in-solution (string) (my-solution-grep string 'regexp nil))
 
-;; partially copy/pasted from `compilation-start'
-(defun my-search-string-in-solution-internal (&optional string flavor filter)
+(defun my-solution-grep (&optional string flavor filter)
   ;; xeno.by: declare locals that were parameters of `compilation-start'
   (let ((mode 'grep-mode))
   (let ((command "")) ;; xeno.by: actual command will be assembled below
@@ -78,7 +77,8 @@
   (set (make-local-variable 'my-solution-grep-local-string) string)
   (let ((flavor (if flavor flavor
               (if (boundp 'my-solution-grep-local-flavor) my-solution-grep-local-flavor 
-              nil))))
+              (if (boundp 'my-solution-grep-prev-flavor) my-solution-grep-prev-flavor
+              nil)))))
   (setq my-solution-grep-prev-flavor flavor)
   (set (make-local-variable 'my-solution-grep-local-flavor) flavor)
   (let ((filter (if (stringp filter) filter
@@ -115,7 +115,9 @@
     "mkfifo /tmp/my_emacs_grep_pipe 2>/dev/null || true; " 
     command " | tee /tmp/my_emacs_grep_pipe & result=$(cat < /tmp/my_emacs_grep_pipe); "
     "if [ $(echo -n $result | grep -c '') = 0 ]; then exit 1; else exit 0; fi"))
-  (set (make-local-variable 'my-solution-grep-local-command) command)))))))
+  (set (make-local-variable 'my-solution-grep-local-command) command)
+  ;;(insert (concat command "\n\n"))))))))
+  ))))))
 
 	(setq thisdir default-directory))
       (set-buffer-modified-p nil))
@@ -240,7 +242,6 @@
     ;; Make it so the next C-x ` will use this buffer.
     (setq next-error-last-buffer outbuf)))))))
 
-
 (add-to-list 'special-display-buffer-names '("*grep*" my-display-grep))
 (defun my-display-grep (target-buffer)
   (let ((target-window 
@@ -254,6 +255,38 @@
   (let ((pop-up-windows t)) (set-window-buffer target-window target-buffer))
   (select-window target-window)
   target-window))
+
+(defun my-solution-grep-do-research ()
+  (interactive)
+  (let ((string my-solution-grep-local-string))
+  (let ((flavor my-solution-grep-local-flavor))
+  (let ((filter my-solution-grep-local-filter))
+    (my-solution-grep string flavor filter)))))
+(defun my-solution-grep-do-filter ()
+  (interactive)
+  (let ((string my-solution-grep-local-string))
+  (let ((flavor my-solution-grep-local-flavor))
+  (let ((filter (read-from-minibuffer 
+    (concat "Search " my-solution-grep-local-string
+            " in: ")
+    (if (and (boundp 'my-solution-grep-local-filter) 
+             (stringp my-solution-grep-local-filter)
+             (not (string= my-solution-grep-local-filter "")))
+      my-solution-grep-local-filter
+      ""))))
+    (my-solution-grep string flavor filter)))))
+(add-hook 'grep-setup-hook (lambda ()
+  (define-key grep-mode-map (kbd "r") 'my-solution-grep-do-research)
+  (define-key grep-mode-map (kbd "f") 'my-solution-grep-do-filter)
+  (define-key grep-mode-map (kbd "n") 'my-solution-grep-do-filter))) ;; n = narrow
+
+(add-hook 'after-change-major-mode-hook (lambda ()
+  (if (and (boundp 'tool-buffers-autofollow) tool-buffers-autofollow)
+    (cond
+     ((eq major-mode 'grep-mode)
+      (next-error-follow-minor-mode 1))
+     ((eq major-mode 'comint-mode)
+      (next-error-follow-minor-mode 1))))))
 
 ;; no need to advice kill-buffer since it calls bury-buffer internally
 (defadvice bury-buffer (around auto-kill-dedicated-grep-window-on-bury activate)
