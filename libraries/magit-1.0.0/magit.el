@@ -462,7 +462,7 @@ Many Magit faces inherit from this one by default."
     (define-key map (kbd "i") 'magit-ignore-item)
     (define-key map (kbd "I") 'magit-ignore-item-locally)
     (define-key map (kbd ".") 'magit-mark-item)
-    (define-key map (kbd "=") 'magit-diff-with-mark)
+    (define-key map (kbd "=") 'magit-diff-with-mark-or-diff-file-under-cursor)
     (define-key map (kbd "d") 'magit-diff-working-tree)
     (define-key map (kbd "D") 'magit-diff)
     (define-key map (kbd "a") 'magit-apply-item)
@@ -4085,6 +4085,24 @@ This is only non-nil in reflog buffers.")
   (interactive)
   (magit-diff (cons (magit-marked-commit)
 		    (magit-commit-at-point))))
+
+(defun magit-diff-with-mark-or-diff-file-under-cursor ()
+  (interactive)
+  (let ((relative-path (save-excursion
+    (let ((current-line (substring-no-properties (thing-at-point 'line))))
+    (if (string-match "^[[:space:]]+Modified[[:space:]]+\\(.*\\)$" current-line)
+      (match-string 1 current-line) nil)))))
+  (let ((base-path (save-excursion
+    (goto-line 2)
+    (let ((repo-line (substring-no-properties (thing-at-point 'line))))
+    (if (string-match "^Local:[[:space:]]+.*?[[:space:]]+\\(.*\\)$" repo-line)
+      (match-string 1 repo-line) nil)))))
+  (let ((path (if (and base-path relative-path) (concat base-path "/" relative-path) nil)))
+  (if path
+    (with-temp-buffer
+      (find-file path)
+      (call-interactively 'vc-diff))
+    (magit-diff-with-mark))))))
 
 ;;; Wazzup
 
