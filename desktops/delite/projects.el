@@ -31,7 +31,8 @@
 
 (defun my-run-project (name-or-path)
   (let ((name (project-name name-or-path)))
-  (let ((function (intern (concat "my-run-" name))))
+;;  (let ((function (intern (concat "my-run-" name))))
+  (let ((function (intern "my-run-scripts")))
     (funcall function))))
 
 (defun my-compile-project (name-or-path)
