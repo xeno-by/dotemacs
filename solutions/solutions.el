@@ -1,10 +1,16 @@
 (defun solution-files (&optional filter)
-  (split-string (shell-command-to-string (find-files-in-solution-command filter)) "\0"))
+  (let ((shell-output (shell-command-to-string (find-files-in-solution-command filter))))
+    ;; remove the last \0 emitted by find
+    (setq shell-output (substring shell-output 0 (- (length shell-output) 1)))
+    (split-string shell-output "\0")))
 
 (defun solution-abbrevd-files (&optional filter)
   ;; todo. find out why this is excruciatingly slow
   ;; (mapcar (lambda (filename) (solution-abbrev-string filename)) (solution-files filter))
-  (split-string (shell-command-to-string (find-abbrevd-files-in-solution-command filter)) "\0"))
+  (let ((shell-output (shell-command-to-string (find-abbrevd-files-in-solution-command filter))))
+    ;; remove the last \0 emitted by find, as well as the eoln emitted by filter (todo. make this xplatform)
+    (setq shell-output (substring shell-output 0 (- (length shell-output) 2)))
+    (split-string shell-output "\0")))
 
 (defun solution-unabbrevd-files (&optional filter)
   (solution-files filter))

@@ -30,59 +30,45 @@
      ((eq major-mode 'comint-mode)
       (next-error-follow-minor-mode 1))))))
 
-;; todo. why does this force cursor to the end of line?
-(defadvice next-error (around unapply-abbreviations-around-next-error activate)
-  (let ((buffer (current-buffer)))
-  (let ((abbrevd-line (chomp (thing-at-point 'line))))
-  (let ((unabbrevd-line (solution-unabbrev-string abbrevd-line)))
-    (when (string= abbrevd-line unabbrevd-line)
-      ad-do-it)
-    (unless (string= abbrevd-line unabbrevd-line)
-      ;; temporarily apply the expansion to the buffer
-      (with-current-buffer buffer
-        (save-excursion
-          (let ((buffer-read-only nil))
-            (let ((bounds (bounds-of-thing-at-point 'line)))
-              (delete-region (car bounds) (- (cdr bounds) 1))
-              (insert unabbrevd-line)))))
-      ;; now we can call the original logic
-      (let ((result ad-do-it))
-        ;; revert the buffer back to the short form
-        (with-current-buffer buffer
-          (save-excursion
-            (let ((buffer-read-only nil))
-              (let ((bounds (bounds-of-thing-at-point 'line)))
-                (delete-region (car bounds) (- (cdr bounds) 1))
-                (insert abbrevd-line)))))
-        ;; don't forget to return the result
-        result))))))
-
-;; todo. why does this force cursor to the end of line?
-(defadvice next-error-internal (around unapply-abbreviations-around-next-error-internal activate)
-  (let ((buffer (current-buffer)))
-  (let ((abbrevd-line (chomp (thing-at-point 'line))))
-  (let ((unabbrevd-line (solution-unabbrev-string abbrevd-line)))
-    (when (string= abbrevd-line unabbrevd-line)
-      ad-do-it)
-    (unless (string= abbrevd-line unabbrevd-line)
-      ;; temporarily apply the expansion to the buffer
-      (with-current-buffer buffer
-        (save-excursion
-          (let ((buffer-read-only nil))
-            (let ((bounds (bounds-of-thing-at-point 'line)))
-              (delete-region (car bounds) (- (cdr bounds) 1))
-                (insert unabbrevd-line)))))
-      ;; now we can call the original logic
-      (let ((result ad-do-it))
-        ;; revert the buffer back to the short form
-        (with-current-buffer buffer
-          (save-excursion
-            (let ((buffer-read-only nil))
-              (let ((bounds (bounds-of-thing-at-point 'line)))
-                (delete-region (car bounds) (- (cdr bounds) 1))
-                (insert abbrevd-line)))))
-        ;; don't forget to return the result
-        result))))))
+(defadvice compilation-find-file (around customize-compilation-find-file activate)
+  (let ((marker (ad-get-arg 0)))
+  (let ((filename (ad-get-arg 1)))
+  (let ((directory (ad-get-arg 2)))
+    (if (file-exists-p filename)
+      (progn
+        ad-do-it)
+      (progn
+        (let ((filename (solution-unabbrev-string filename)))
+        (if (file-exists-p filename)
+          (progn 
+            (let ((new-filename (file-name-nondirectory filename)))
+            (let ((new-directory (file-name-directory filename)))
+            (ad-set-arg 1 new-filename)
+            (ad-set-arg 2 new-directory)
+            ad-do-it)))
+          (progn
+            (if (file-name-directory filename)
+              (progn
+                ad-do-it)
+              (progn
+                (let ((matches (solution-abbrevd-files filename)))
+                (cond
+                 ((equal (length matches) 0)
+                   ad-do-it)
+                 ((equal (length matches) 1)
+                   (let ((filename (solution-unabbrev-string (car matches))))
+                   (let ((new-filename (file-name-nondirectory filename)))
+                   (let ((new-directory (file-name-directory filename)))
+                   (ad-set-arg 1 new-filename)
+                   (ad-set-arg 2 new-directory)
+                   ad-do-it))))
+                 (t 
+                   (let ((filename (solution-unabbrev-string (ido-completing-read (concat "Find this " compilation-error " in: ") matches nil t))))
+                   (let ((new-filename (file-name-nondirectory filename)))
+                   (let ((new-directory (file-name-directory filename)))
+                   (ad-set-arg 1 new-filename)
+                   (ad-set-arg 2 new-directory)
+                   ad-do-it)))))))))))))))))
 
 ;; courtesy of Trey Jackson, modified by xeno.by
 ;; http://stackoverflow.com/questions/2299133/emacs-grep-find-link-in-same-window

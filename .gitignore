@@ -1,5 +1,6 @@
 desktop
 desktop.lock
+session.*
 ac-comphist.dat
 auto-save-list/*
 *.elc
