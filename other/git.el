@@ -1,3 +1,5 @@
+(require 'vc)
+
 (add-to-list 'load-path (concat emacs-root "/libraries/magit-1.0.0"))
 (autoload 'magit-status "magit" nil t)
 (autoload 'svn-status "psvn" nil t)
@@ -48,4 +50,11 @@
   (if (or (string= (buffer-name) "*vc-diff*")
           (string= (buffer-name) "*vc-change-log*"))
    (call-interactively 'vc-revert)
-   (insert "v"))))
+  (if (string= (buffer-name) "*vc-dir*")
+   (call-interactively 'vc-revert)
+   (insert "v")))))
+
+(add-hook 'after-change-major-mode-hook (lambda ()
+  (when (equal major-mode 'vc-dir-mode)
+    (define-key vc-dir-mode-map (kbd "c") 'vc-next-action)
+    (define-key vc-dir-mode-map (kbd "v") 'vc-revert))))
