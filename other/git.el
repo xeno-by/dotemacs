@@ -47,4 +47,5 @@
   (interactive)
   (if (or (string= (buffer-name) "*vc-diff*")
           (string= (buffer-name) "*vc-change-log*"))
-   (call-interactively 'vc-revert))))
+   (call-interactively 'vc-revert)
+   (insert "v"))))
