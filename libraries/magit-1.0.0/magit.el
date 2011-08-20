@@ -4099,9 +4099,16 @@ This is only non-nil in reflog buffers.")
       (match-string 1 repo-line) nil)))))
   (let ((path (if (and base-path relative-path) (concat base-path "/" relative-path) nil)))
   (if path
-    (with-temp-buffer
-      (find-file path)
-      (call-interactively 'vc-diff))
+    (progn
+      (require 'vc)
+      (let ((backend (vc-backend path)))
+      (let ((rev1 (vc-working-revision path)))
+      (let ((rev2 (vc-call-backend backend 'previous-revision path rev1)))
+      ;; this bury/unbury stuff makes sure that we return back to magit buffer after we're done with vc-diff
+      (bury-buffer)
+      (unbury-buffer)
+      (cd (file-name-directory path))
+      (vc-diff-internal t (list backend (list path)) rev1 rev2)))))
     (magit-diff-with-mark))))))
 
 ;;; Wazzup

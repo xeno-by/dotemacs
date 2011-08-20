@@ -15,6 +15,30 @@
         (tree-buffer-update)))))
 (global-set-key (kbd "C-r") 'my-ecb-refresh)
 
+(defun my-ecb-diff ()
+  (interactive)
+  (let ((node (tree-buffer-get-node-at-point)))
+  (when node
+  (let ((file (tree-node->data node)))
+    (if (file-directory-p file)
+      (progn
+        (vc-dir file))
+      (progn
+        (with-temp-buffer
+          (find-file file)
+          (call-interactively 'vc-diff))))))))
+(defun my-ecb-omni-diff ()
+  (interactive)
+  (if (eq (current-buffer) (get-buffer ecb-directories-buffer-name))
+    (my-ecb-delete)
+    (progn
+      (my-ecb-goto-window-directories)
+      (my-ecb-diff)
+      (my-ecb-goto-window-edit-last))))
+(global-set-key (kbd "s-=") 'my-ecb-omni-diff)
+(global-set-key (kbd "C-=") 'my-ecb-omni-diff)
+(add-hook 'ecb-directories-buffer-after-create-hook (lambda () (local-set-key (kbd "=") 'my-ecb-diff)))
+
 (defun my-ecb-delete () 
   (interactive)
   (let ((node (tree-buffer-get-node-at-point)))
@@ -80,9 +104,7 @@
     (progn
       (my-ecb-goto-window-directories)
       (my-ecb-create-file))))
-(global-set-key (kbd "s-=") 'my-ecb-omni-create-file)
 (global-set-key (kbd "<s-insert>") 'my-ecb-omni-create-file)
-(add-hook 'ecb-directories-buffer-after-create-hook (lambda () (local-set-key (kbd "=") 'my-ecb-create-file)))
 (add-hook 'ecb-directories-buffer-after-create-hook (lambda () (local-set-key (kbd "<insert>") 'my-ecb-create-file)))
 
 (defun my-ecb-rename ()

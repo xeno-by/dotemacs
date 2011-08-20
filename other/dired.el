@@ -47,7 +47,6 @@
   (define-key dired-mode-map (kbd "+") 'my-dired-create-directory)
   (define-key dired-mode-map (kbd "<S-insert>") 'my-dired-create-directory)
   (define-key dired-mode-map (kbd "<S-f4>") 'my-dired-create-file)
-  (define-key dired-mode-map (kbd "=") 'my-dired-create-file)
   (define-key dired-mode-map (kbd "<insert>") 'my-dired-create-file)
 
   (define-key dired-mode-map (kbd "<return>") 'dired-single-buffer)

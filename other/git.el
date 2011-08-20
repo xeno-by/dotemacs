@@ -42,3 +42,9 @@
 (global-set-key (kbd "C-S-p") (lambda ()
   (interactive)
   (magit-push)))
+
+(global-set-key (kbd "v") (lambda ()
+  (interactive)
+  (if (or (string= (buffer-name) "*vc-diff*")
+          (string= (buffer-name) "*vc-change-log*"))
+   (call-interactively 'vc-revert))))
