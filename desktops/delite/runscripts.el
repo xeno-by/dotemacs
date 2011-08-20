@@ -32,6 +32,14 @@
   (select-window target-window)
   target-window))
 
+;; recompile MUST recreate a session. using old scripts might be harmful and misleading
+(defadvice recompile (around use-fresh-scripts-on-recompile activate)
+  (let ((buffer-being-recompiled (buffer-name)))
+    (when (string= buffer-being-recompiled "*delite*")
+      (my-run-scripts))
+    (when (not (string= buffer-being-recompiled "*delite*"))
+      ad-do-it)))
+
 ;; no need to advice kill-buffer since it calls bury-buffer internally
 (defadvice bury-buffer (around auto-kill-dedicated-delite-window-on-bury activate)
   (let ((buffer-being-buried (buffer-name)))
