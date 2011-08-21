@@ -11,4 +11,4 @@ call delitec -Dblas.enabled=true *.scala
 if not %ERRORLEVEL%==0 exit /B %ERRORLEVEL%
 echo.
 echo (Phase three) DSL execution...
-call delite
+delite
