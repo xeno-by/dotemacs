@@ -6,28 +6,12 @@
 (global-set-key (kbd "<f10>") (lambda ()
   (interactive)
   (if (window-system)
-      (menu-bar-mode (if menu-bar-mode -1 1))
-    (menu-bar-open))))(tool-bar-mode -1)
+    (menu-bar-mode (if menu-bar-mode -1 1))
+    (menu-bar-open))))
 (set-scroll-bar-mode 'right)
 ;;(scroll-bar-mode -1)
 
-(setq os-windows (fboundp 'w32-send-sys-command))
-(setq os-linux (fboundp 'x-send-client-message))
-(setq os-mac nil)
-
-(defun maximize-frame ()
-  (cond
-   (os-linux 
-    (progn
-      (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
-      (x-send-client-message nil 0 nil "_NET_WM_STATE" 32 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))))
-   (os-windows
-    (progn
-      (w32-send-sys-command 61488)))
-   (os-mac
-    (progn
-      ;; i wonder how we do this on darwin
-      (message "not implemented")))))
+(if (not (fboundp 'maximize-frame)) (error "unsupported operating system"))
 (maximize-frame)
 
 (defun chomp (str)
@@ -49,41 +33,33 @@
 (require 'framemove)
 (framemove-default-keybindings 'super)
 (global-set-key (kbd "<s-tab>") 'other-frame)
-(global-set-key (kbd "s-`") (lambda () 
+(global-set-key (kbd "s-`") 'move-buffer-to-other-frame)
+(defun move-buffer-to-other-frame ()
   (interactive) 
-  (cond
-   (os-linux
-    (progn
-      (let ((pc-name (car (slurp "/etc/hostname"))))
-        (cond
-         ((string= pc-name "xeno-main")
-          (if (<= (length (frame-list)) 2)
-            (let ((current-frame (window-configuration-frame (current-window-configuration))))
-            (let ((current-frame-index (position current-frame (frame-list))))
-            (let ((current-window (frame-selected-window current-frame)))
-            (let ((current-buffer (window-buffer current-window)))
-            (let ((other-frame-existed (= (length (frame-list)) 2)))
-            (let ((other-frame-index (- 1 current-frame-index)))
-            (let ((other-frame (if (= (length (frame-list)) 1)
-              (progn
-                (let ((fresh-frame (make-frame)))
-                  (bury-buffer) ;; arguable decision, though, possibly useful
-                  (other-frame 1)
-                  (maximize-frame)
-                  (call-process "swapmonitor")
-                  fresh-frame))
-              (nth other-frame-index (frame-list)))))
-            (let ((other-window (frame-selected-window other-frame)))
-              (set-window-buffer other-window current-buffer)
-              (when other-frame-existed 
-                  (bury-buffer)
-                  (other-frame 1))))))))))))))))
-   (os-windows
-    (progn
-      (message "not implemented")))
-   (os-mac
-    (progn
-      (message "not implemented"))))))
+  (if (<= (length (frame-list)) 2)
+    (let ((current-frame (window-configuration-frame (current-window-configuration))))
+    (let ((current-frame-index (position current-frame (frame-list))))
+    (let ((current-window (frame-selected-window current-frame)))
+    (let ((current-buffer (window-buffer current-window)))
+    (let ((other-frame-existed (= (length (frame-list)) 2)))
+    (let ((other-frame-index (- 1 current-frame-index)))
+    (let ((other-frame (if (= (length (frame-list)) 1)
+      (progn
+        (let ((fresh-frame (make-frame)))
+          (bury-buffer) ;; arguable decision, though, possibly useful
+          (other-frame 1)
+          (if windows (set-default-font my-default-font))
+          (maximize-frame)
+          (if windows (sit-for 0))
+          (if (not (fboundp 'swap-monitor)) (error "unsupported operating system"))
+          (swap-monitor)
+          fresh-frame))
+        (nth other-frame-index (frame-list)))))
+      (let ((other-window (frame-selected-window other-frame)))
+        (set-window-buffer other-window current-buffer)
+        (when other-frame-existed 
+          (bury-buffer)
+          (other-frame 1))))))))))))
 
 (defun my-on-delete-frame (current-frame)
   (interactive)

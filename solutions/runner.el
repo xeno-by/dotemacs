@@ -1,9 +1,3 @@
-(global-set-key (kbd "C-|") (lambda () 
-  (interactive) 
-  (if (fboundp 'my-run-project) 
-    (my-run-project (buffer-file-name (current-buffer)))
-    (message "my-run-project is not implemented"))))
-
 (global-set-key (kbd "<C-S-return>") (lambda () 
   (interactive)
   (when (eq major-mode 'compilation-mode)

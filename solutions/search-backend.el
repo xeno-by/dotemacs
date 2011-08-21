@@ -112,9 +112,9 @@
   ;; this overcomes the "xargs exited abnormally with exit code 123" error
   ;; more details here: http://superuser.com/questions/197031/grep-exits-abnormally-with-code-123-when-running-rgrep-on-emacs
   (setq command (concat 
-    "mkfifo /tmp/my_emacs_grep_pipe 2>/dev/null || true; " 
-    command " | tee /tmp/my_emacs_grep_pipe & result=$(cat < /tmp/my_emacs_grep_pipe); "
-    "if [ $(echo -n $result | grep -c '') = 0 ]; then exit 1; else exit 0; fi"))
+    "pipe=\"$(mktemp)\"; " 
+    command " | tee \"$pipe\"; "
+    "if [ $(wc -l \"$pipe\" | awk '{print $1}') = 0 ]; then exit 1; else exit 0; fi"))
   (set (make-local-variable 'my-solution-grep-local-command) command)
   ;;(insert (concat command "\n\n"))))))))
   ))))))

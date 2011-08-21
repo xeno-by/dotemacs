@@ -100,7 +100,7 @@
 (defun my-ecb-omni-create-file ()
   (interactive)
   (if (eq (current-buffer) (get-buffer ecb-directories-buffer-name))
-    (my-ecb-create-directory)
+    (my-ecb-create-source)
     (progn
       (my-ecb-goto-window-directories)
       (my-ecb-create-file))))

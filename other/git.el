@@ -6,15 +6,15 @@
 (require 'magit)
 
 (defun infer-git-root (dir)
-  (let ((filename dir))
-    (progn
-      (let ((gitroot nil))
-        (loop while (not (string= filename "/")) do
-          (setq filename (file-name-as-directory filename))
-          (let ((dotgit (concat filename ".git/")))
-            (if (and (file-exists-p dotgit) (not gitroot)) (setq gitroot filename)))
-          (setq filename (file-name-directory (directory-file-name filename))))
-        gitroot))))
+  (let ((gitroot nil))
+    (let ((prev nil))
+    (let ((curr dir))
+    (loop while (not (string= prev curr)) do
+      (let ((dotgit (concat (file-name-as-directory curr) ".git/")))
+        (if (and (file-exists-p dotgit) (not gitroot)) (setq gitroot curr)))
+      (setq prev curr)
+      (setq curr (file-name-directory (directory-file-name curr))))))
+  gitroot))
 
 (global-set-key (kbd "C-S-g") (lambda ()
   (interactive)
