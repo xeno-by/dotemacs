@@ -1,3 +1,4 @@
+(if (or (not (stringp (getenv "USERPROFILE"))) (string= "" (getenv "USERPROFILE"))) (error "environment variable USERPROFILE not set"))
 (if (or (not (stringp (getenv "APPDATA"))) (string= "" (getenv "APPDATA"))) (error "environment variable APPDATA not set"))
 
 (setq emacs-root (concat (getenv "APPDATA") "\\.emacs.d"))

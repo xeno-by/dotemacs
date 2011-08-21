@@ -11,3 +11,11 @@
 ;; this begs for more universal solution (e.g. disabling this hook only if the file is under Git)
 ;; but I'll leave that as TBI for now
 (defadvice vc-find-file-hook (around disable-vc-find-file-hook-on-windows activate))
+
+(defadvice magit-push (around set-home-to-what-git-expects-around-magit-push activate)
+  (let ((old-home (getenv "HOME")))
+  (unwind-protect
+    (progn
+      (setenv "HOME" (getenv "USERPROFILE"))
+      ad-do-it)
+    (setenv "HOME" old-home))))
