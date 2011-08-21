@@ -14,21 +14,6 @@
 (if (not (fboundp 'maximize-frame)) (error "unsupported operating system"))
 (maximize-frame)
 
-(defun chomp (str)
-  (let ((s (if (symbolp str) (symbol-name str) str)))
-    (if (string-match "[ \t\r\n\v\f]+$" s) (replace-match "" nil t s) s)))
-
-(defun slurp (file)
-   (let ((lines ()))
-   (when (file-readable-p file)
-     (with-temp-buffer
-       (insert-file-contents file)
-       (goto-char (point-min))
-       (while (not (eobp))
-         (setq lines (append lines (list (chomp (thing-at-point 'line)))))
-         (forward-line))))
-   lines))
-
 (add-to-list 'load-path (concat emacs-root "/libraries/framemove-0.9"))
 (require 'framemove)
 (framemove-default-keybindings 'super)

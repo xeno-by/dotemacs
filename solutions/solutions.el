@@ -44,8 +44,7 @@
     (mapc (lambda (abbrev)
       (let ((short (car abbrev)))
       (let ((expanded (cadr abbrev)))
-        (if (and (>= (length string) (length expanded))
-                     (string= expanded (substring string 0 (length expanded))))
+        (if (starts-with string expanded)
         (setq string (concat short (substring string (length expanded)))))))) abbrevs))
   string)
 
@@ -54,8 +53,7 @@
     (mapc (lambda (abbrev)
       (let ((short (car abbrev)))
       (let ((expanded (cadr abbrev)))
-        (if (and (>= (length string) (length short))
-                     (string= short (substring string 0 (length short))))
+        (if (starts-with string short)
         (setq string (concat expanded (substring string (length short)))))))) abbrevs))
   string)
 

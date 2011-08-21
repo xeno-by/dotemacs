@@ -21,6 +21,7 @@
 (linux (load-file (concat (file-name-directory load-file-name) "/" "xplatform" "/" "linux" "/" "bootstrapper.el")))
 (t (error "unsupported operating system")))
 
+(load-all-files-from-dir (concat emacs-root "/" "utils"))
 (load-all-files-from-dir (concat emacs-root "/" "editor"))
 (load-all-files-from-dir (concat emacs-root "/" "other"))
 (load-file (concat emacs-root "/" "solutions" "/" "bootstrapper.el"))
