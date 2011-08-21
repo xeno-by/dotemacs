@@ -1,4 +1,4 @@
-(setq my-run-scripts-scenario (concat (file-name-directory load-file-name) "runscripts.sh"))
+(setq my-run-scripts-scenario (concat (file-name-directory load-file-name) (if windows "runscripts.bat" "runscripts.sh")))
 (setq my-run-scripts-testapp (concat (file-name-directory load-file-name) "runscripts.scala"))
 
 (defun my-run-scripts ()
