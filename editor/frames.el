@@ -48,9 +48,7 @@
         (let ((fresh-frame (make-frame)))
           (bury-buffer) ;; arguable decision, though, possibly useful
           (other-frame 1)
-          (if windows (set-default-font my-default-font))
           (maximize-frame)
-          (if windows (sit-for 0))
           (if (not (fboundp 'swap-monitor)) (error "unsupported operating system"))
           (swap-monitor)
           fresh-frame))
