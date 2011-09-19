@@ -5,7 +5,7 @@
   (if (file-exists-p (concat path "/project/Build.scala")) path nil))
 
 ;; partially copy/pasted from ensime-sbt.el
-(defun sbt-invoke (sbt-name sbt-path sbt-command)
+(defun sbt-invoke (sbt-name sbt-path &rest sbt-commands)
   (when (and sbt-name sbt-path)
     (let ((target-buffer (get-buffer "*sbt*")))
     (if target-buffer (kill-buffer target-buffer))
@@ -19,7 +19,7 @@
     ;;(set (make-local-variable 'sbt-invoke-status) nil)
     (setq sbt-invoke-name sbt-name)
     (setq sbt-invoke-path sbt-path)
-    (setq sbt-invoke-command sbt-command)
+    (setq sbt-invoke-commands sbt-commands)
     (setq sbt-invoke-status nil)
 
     (let ((target-window 
@@ -88,6 +88,14 @@
       (if (and (get-buffer-process (current-buffer)) (eq (point) (point-max)))
         (comint-send-input)
         (compile-goto-error))))
+    (define-key sbt-minor-mode-map (kbd "C-S-r") (lambda ()
+      (interactive)
+      (let ((name nil))
+        (dolist (project projects)
+          (when (string= sbt-invoke-name (car (project-metadata (car project))))
+            (setq name (car project))))
+        (message name)
+        (sbt-invoke sbt-invoke-name sbt-invoke-path "console"))))
     (define-key sbt-minor-mode-map (kbd "C-S-b") (lambda ()
       (interactive)
       (let ((name nil))
@@ -119,7 +127,7 @@
       (interactive)
       (if (and (get-buffer-process (current-buffer)) (eq (point) (point-max)))
         (insert "g")
-        (sbt-invoke sbt-invoke-name sbt-invoke-path sbt-invoke-command))))
+        (sbt-invoke sbt-invoke-name sbt-invoke-path sbt-invoke-commands))))
 
     (define-minor-mode sbt-minor-mode "Hosts keybindings for sbt interactions" nil " sbt" 'sbt-minor-mode-map :global nil)
     (sbt-minor-mode 1)
@@ -147,19 +155,16 @@
               (insert next-step)
               (comint-send-input))
             (unless sbt-compilation-steps 
-              (setq sbt-invoke-status 'success)
-              (setq sbt-output-callback nil)
-              (setq sbt-invoke-next-step nil)
-              (comint-send-eof)
-              ;;(run-at-time 0 nil (lambda () (bury-buffer)))))))))
-              ))))))
+              (when (not (string= (car (last sbt-invoke-commands)) "console"))
+                (setq sbt-invoke-status 'success)
+                (setq sbt-output-callback nil)
+                (setq sbt-invoke-next-step nil)
+                (comint-send-eof)
+                ;;(run-at-time 0 nil (lambda () (bury-buffer))))))))))
+              )))))))
     (setq sbt-output-callback sbt-invoke-next-step)
 
-    (setq sbt-compilation-steps 
-      (list
-;;        (concat "project " sbt-name)
-;;        "update"
-        sbt-command))
+    (setq sbt-compilation-steps sbt-commands)
     (cd (sbt-project-root sbt-path))
     (comint-exec (current-buffer) "sbt" "sbt" nil nil)))
 

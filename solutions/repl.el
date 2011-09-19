@@ -1,0 +1,8 @@
+(global-set-key (kbd "C-S-r") (lambda () 
+  (interactive)
+  (when (eq major-mode 'compilation-mode)
+    (recompile))
+  (unless (eq major-mode 'compilation-mode)
+    (if (fboundp 'my-repl-project) 
+      (my-repl-project (buffer-file-name (current-buffer)))
+      (message "my-repl-project is not implemented")))))
