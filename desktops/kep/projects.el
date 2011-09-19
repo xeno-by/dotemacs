@@ -1,7 +1,7 @@
 ;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
 
-(add-project "nsc" "C:/Users/xeno.by/Projects/Active/Scala/src/compiler/scala/tools/nsc/" nil)
-(add-project "reflect" "C:/Users/xeno.by/Projects/Active/Scala/src/compiler/scala/reflect/" nil)
+(add-project "nsc" "/home/xeno_by/Projects/Scala/src/compiler/scala/tools/nsc/" nil)
+(add-project "reflect" "/home/xeno_by/Projects/Scala/src/compiler/scala/reflect/" nil)
 
 (setq tool-buffers-autofollow nil)
 (setq tool-buffers-display-in-bottom-window t)
