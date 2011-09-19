@@ -5,7 +5,7 @@
 (load-all-files-from-dir (file-name-directory load-file-name) :exclude '("bootstrapper.el"))
 
 (load-file (concat emacs-root "/" "desktops" "/" "current.el"))
-(setq desktop-root (concat emacs-root "/" "desktops" "/" my-current-desktop))
+(setq desktop-root (concat emacs-root "/" "desktops" "/" (if (getenv "EMACS_DESKTOP") (getenv "EMACS_DESKTOP") my-current-desktop)))
 (load-all-files-from-dir desktop-root)
 (load-file (concat emacs-root "/" "desktops" "/" "desktop.el"))
 

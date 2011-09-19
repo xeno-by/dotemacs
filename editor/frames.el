@@ -9,7 +9,7 @@
     (menu-bar-mode (if menu-bar-mode -1 1))
     (menu-bar-open))))
 (set-scroll-bar-mode 'right)
-;;(scroll-bar-mode -1)
+(scroll-bar-mode -1)
 
 (if (not (fboundp 'maximize-frame)) (error "unsupported operating system"))
 (maximize-frame)

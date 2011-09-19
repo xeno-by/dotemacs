@@ -1,1 +1,1 @@
-(setq my-current-desktop "delite")
+(setq my-current-desktop "fos")
