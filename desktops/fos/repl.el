@@ -1,11 +1,5 @@
-(defun sbt-project-root (path)
-  (while (and (not (file-exists-p (concat path "/project/Build.scala")))
-              (not (equal path (file-truename (concat path "/..")))))
-    (setf path (file-truename (file-truename (concat path "/..")))))
-  (if (file-exists-p (concat path "/project/Build.scala")) path nil))
-
 ;; partially copy/pasted from ensime-sbt.el
-(defun sbt-invoke (sbt-name sbt-path &rest sbt-commands)
+(defun sbt-invoke-repl (sbt-name sbt-path)
   (when (and sbt-name sbt-path)
     (let ((target-buffer (get-buffer "*sbt*")))
     (if target-buffer (kill-buffer target-buffer))
@@ -19,7 +13,7 @@
     ;;(set (make-local-variable 'sbt-invoke-status) nil)
     (setq sbt-invoke-name sbt-name)
     (setq sbt-invoke-path sbt-path)
-    (setq sbt-invoke-commands sbt-commands)
+    (setq sbt-invoke-commands '("compile"))
     (setq sbt-invoke-status nil)
 
     (let ((target-window 
@@ -129,7 +123,7 @@
       (interactive)
       (if (and (get-buffer-process (current-buffer)) (eq (point) (point-max)))
         (insert "g")
-        (sbt-invoke sbt-invoke-name sbt-invoke-path sbt-invoke-commands))))
+        (repl-invoke sbt-invoke-name sbt-invoke-path))))
 
     (define-minor-mode sbt-minor-mode "Hosts keybindings for sbt interactions" nil " sbt" 'sbt-minor-mode-map :global nil)
     (sbt-minor-mode 1)
@@ -154,42 +148,32 @@
         (unless failed 
           (let ((next-step (car sbt-compilation-steps)))
             (setq sbt-compilation-steps (cdr sbt-compilation-steps))
-            (when next-step 
+            (when next-step
               (insert next-step)
               (comint-send-input))
             (unless sbt-compilation-steps 
-              (when (not (string= (car (last sbt-invoke-commands)) "console"))
-                (setq sbt-invoke-status 'success)
-                (setq sbt-output-callback nil)
-                (setq sbt-invoke-next-step nil)
-                (comint-send-eof)
-                ;;(run-at-time 0 nil (lambda () (bury-buffer))))))))))
-              )))))))
+              (setq sbt-invoke-status 'success)
+              (setq sbt-output-callback nil)
+              (setq sbt-invoke-next-step nil)
+              (comint-send-eof)
+              ;;(run-at-time 0 nil (lambda () (bury-buffer)))
+              ))))))
     (setq sbt-output-callback sbt-invoke-next-step)
 
-    (setq sbt-compilation-steps sbt-commands)
+    (set (make-local-variable 'after-change-functions) '((lambda (start stop prev-length) 
+      (when (equal sbt-invoke-status 'success)
+        (let ((content (buffer-substring-no-properties (point-min) (point-max))))
+        (when (and (string-match "Process sbt finished" content)
+                   (not (string-match "\\[error\\]" content)))
+          (setq sbt-invoke-status nil)
+          (setq sbt-output-callback nil)
+          (setq sbt-invoke-next-step nil)
+          (insert "\n")
+          (compilation-shell-minor-mode -1)
+          (cd (sbt-project-root sbt-invoke-path))
+          ;; todo. choose the right scala and the right classpath
+          (comint-exec (current-buffer) "scala" "scala" nil '("-classpath" "./target/scala-2.9.1.final/classes"))))))))
+
+    (setq sbt-compilation-steps '("compile"))
     (cd (sbt-project-root sbt-path))
     (comint-exec (current-buffer) "sbt" "sbt" nil nil)))
-
-(defadvice recompile (around override-recompile-for-sbt activate)
-  (if (string= (buffer-name) "*sbt*")
-    (sbt-invoke sbt-invoke-name sbt-invoke-path)
-    ad-do-it))
-
-(defadvice revert-buffer (around override-revert-for-sbt activate)
-  (if (string= (buffer-name) "*sbt*")
-    (sbt-invoke sbt-invoke-name sbt-invoke-path)
-    ad-do-it))
-
-;; no need to advice kill-buffer since it calls bury-buffer internally
-(defadvice bury-buffer (around auto-kill-dedicated-sbt-window-on-bury activate)
-  (let ((buffer-being-buried (buffer-name)))
-  (let ((sole-window (sole-window)))
-    (when (string= buffer-being-buried "*sbt*")
-      (when (not sole-window)
-        (message (buffer-name (current-buffer)))
-        (delete-window))
-      (when sole-window 
-        ad-do-it))
-    (when (not (string= buffer-being-buried "*sbt*"))
-      ad-do-it))))
