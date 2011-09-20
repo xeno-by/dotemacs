@@ -94,7 +94,6 @@
         (dolist (project projects)
           (when (string= sbt-invoke-name (car (project-metadata (car project))))
             (setq name (car project))))
-        (message name)
         ;; todo. this hangs emacs. see comments in projects.el
         ;;(sbt-invoke sbt-invoke-name sbt-invoke-path "compile" "console"))))
         (sbt-invoke-repl sbt-invoke-name sbt-invoke-path))))
@@ -104,7 +103,6 @@
         (dolist (project projects)
           (when (string= sbt-invoke-name (car (project-metadata (car project))))
             (setq name (car project))))
-        (message name)
         (sbt-invoke sbt-invoke-name sbt-invoke-path "compile"))))
     (define-key sbt-minor-mode-map (kbd "<C-S-return>") (lambda ()
       (interactive)
@@ -187,7 +185,7 @@
   (let ((sole-window (sole-window)))
     (when (string= buffer-being-buried "*sbt*")
       (when (not sole-window)
-        (message (buffer-name (current-buffer)))
+        ;;(message (buffer-name (current-buffer)))
         (delete-window))
       (when sole-window 
         ad-do-it))

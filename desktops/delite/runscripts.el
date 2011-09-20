@@ -46,7 +46,7 @@
   (let ((sole-window (sole-window)))
     (when (string= buffer-being-buried "*delite*")
       (when (not sole-window)
-        (message (buffer-name (current-buffer)))
+        ;;(message (buffer-name (current-buffer)))
         (delete-window))
       (when sole-window 
         ad-do-it))
