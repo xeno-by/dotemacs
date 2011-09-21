@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; -*- mode: emacs-lisp  -*-
 
 (add-project "nsc" "/home/xeno_by/Projects/Scala/src/compiler/scala/tools/nsc/" nil)
 (add-project "reflect" "/home/xeno_by/Projects/Scala/src/compiler/scala/reflect/" nil)

@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; -*- mode: emacs-lisp; -*-
 
 (add-project "scratchpad" "/media/XENO/Dropbox/Projects/Foundations of Software/Scratchpad/src" "scratchpad" "scratchpad")
 (add-project "nb" "/media/XENO/Dropbox/Projects/Foundations of Software/P1 - Numbers and Booleans/src" "nb" "nb")
@@ -12,7 +12,7 @@
 (defun my-repl-project (name-or-path)
   (let ((project-name (project-name name-or-path)))
   (when project-name
-    (save-buffer)
+    (if (buffer-file-name) (save-buffer))
     ;;(sbt-invoke "*repl*" project-name ("compile" "console")))))
     (sbt-invoke "*repl*" project-name "compile" (lambda ()
       (insert "\n")
@@ -24,21 +24,21 @@
 (defun my-compile-project (name-or-path)
   (let ((project-name (project-name name-or-path)))
   (when project-name
-    (save-buffer)
+    (if (buffer-file-name) (save-buffer))
     ;;(sbt-invoke "*compile*" project-name "compile" (lambda () (run-at-time 0 nil (lambda () (bury-buffer))))))))
     (sbt-invoke "*compile*" project-name "compile"))))
                                                                                         
 (defun my-rebuild-project (name-or-path)
   (let ((project-name (project-name name-or-path)))
   (when project-name
-    (save-buffer)
+    (if (buffer-file-name) (save-buffer))
     ;;(sbt-invoke "*compile*" project-name '("clean" "compile") (lambda () (run-at-time 0 nil (lambda () (bury-buffer))))))))
     (sbt-invoke "*compile*" project-name '("clean" "compile")))))
                                                                                         
 (defun my-run-project (name-or-path)
   (let ((project-name (project-name name-or-path)))
   (when project-name
-    (save-buffer)
+    (if (buffer-file-name) (save-buffer))
     ;;(sbt-invoke "*run*" project-name ("compile" "run")))))
     (sbt-invoke "*run*" project-name "compile" (lambda ()
       (insert "\n")
@@ -50,7 +50,7 @@
 (defun my-test-project (name-or-path)
   (let ((project-name (project-name name-or-path)))
   (when project-name
-    (save-buffer)
+    (if (buffer-file-name) (save-buffer))
     ;;(sbt-invoke "*test*" project-name "test" (lambda () (run-at-time 0 nil (lambda () (bury-buffer))))))))
     (sbt-invoke "*test*" project-name "test"))))
 

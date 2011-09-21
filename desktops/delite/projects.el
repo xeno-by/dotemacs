@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; -*- mode: emacs-lisp -*-
 
 (add-project "lms" "/home/xeno_by/Projects/Delite/virtualization-lms-core/src" "virtualization-lms-core" "virtualization-lms-core")
 (add-project "framework" "/home/xeno_by/Projects/Delite/Delite/framework/src/ppl/delite/framework" "Delite Framework" "Delite")
