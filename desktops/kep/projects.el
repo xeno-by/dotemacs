@@ -14,7 +14,7 @@
       (save-buffer)
       ()))))
 
-(defun my-compile-master-project (name-or-path)
+(defun my-rebuild-project (name-or-path)
   (if (eq major-mode 'scala-mode)
     (let ((sbt-master-name (cadr (project-metadata name-or-path))))
     (let ((sbt-path (sbt-project-root (project-path name-or-path))))

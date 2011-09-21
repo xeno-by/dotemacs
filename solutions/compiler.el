@@ -10,15 +10,15 @@
 
 (define-key my-compile-map (kbd "r") (lambda () 
   (interactive) 
-  (if (fboundp 'my-compile-master-project) 
-    (my-compile-master-project (buffer-file-name (current-buffer)))
-    (message "my-compile-master-project is not implemented"))))
+  (if (fboundp 'my-rebuild-project) 
+    (my-rebuild-project (buffer-file-name (current-buffer)))
+    (message "my-rebuild-project is not implemented"))))
 
 (define-key my-compile-map (kbd "M-r") (lambda () 
   (interactive) 
-  (if (fboundp 'my-compile-master-project) 
-    (my-compile-master-project (buffer-file-name (current-buffer)))
-    (message "my-compile-master-project is not implemented"))))
+  (if (fboundp 'my-rebuild-project) 
+    (my-rebuild-project (buffer-file-name (current-buffer)))
+    (message "my-rebuild-project is not implemented"))))
 
 (setq next-error-highlight t)
 

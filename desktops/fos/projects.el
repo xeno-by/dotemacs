@@ -10,42 +10,47 @@
 (setq tool-buffers-display-in-right-window nil)
                                                                                         
 (defun my-repl-project (name-or-path)
-  (if (eq major-mode 'scala-mode)
-    (let ((sbt-name (car (project-metadata name-or-path))))
-    (let ((sbt-path (sbt-project-root (project-path name-or-path))))
-      (save-buffer)
-      ;; todo. find out why this hangs emacs
-      ;; the trouble is definitely inside comint, since:
-      ;; 1) turning off callbacks does not work
-      ;; 2) calling "console" only does not work
-      ;; 3) invoking "sbt console" instead of "sbt" and echo console also does not work
-      ;;(sbt-invoke sbt-name sbt-path "compile" "console")))))
-      (sbt-invoke-repl sbt-name sbt-path)))))
-
+  (let ((project-name (project-name name-or-path)))
+  (when project-name
+    (save-buffer)
+    ;;(sbt-invoke "*repl*" project-name ("compile" "console")))))
+    (sbt-invoke "*repl*" project-name "compile" (lambda ()
+      (insert "\n")
+      (compilation-shell-minor-mode -1)
+      (cd (sbt-project-root (sbt-invoke-project)))
+      ;; todo. infer the correct scala and classpath
+      (comint-exec (current-buffer) "scala" "scala" nil '("-classpath" "./target/scala-2.9.1.final/classes")))))))
+                                                                                        
 (defun my-compile-project (name-or-path)
-  (if (eq major-mode 'scala-mode)
-    (let ((sbt-name (car (project-metadata name-or-path))))
-    (let ((sbt-path (sbt-project-root (project-path name-or-path))))
-      (save-buffer)
-      (sbt-invoke sbt-name sbt-path "compile")))))
-
-(defun my-compile-master-project (name-or-path)
-  (if (eq major-mode 'scala-mode)
-    (let ((sbt-master-name (cadr (project-metadata name-or-path))))
-    (let ((sbt-path (sbt-project-root (project-path name-or-path))))
-      (save-buffer)
-      (sbt-invoke sbt-master-name sbt-path "compile")))))
-
+  (let ((project-name (project-name name-or-path)))
+  (when project-name
+    (save-buffer)
+    ;;(sbt-invoke "*compile*" project-name "compile" (lambda () (run-at-time 0 nil (lambda () (bury-buffer))))))))
+    (sbt-invoke "*compile*" project-name "compile"))))
+                                                                                        
+(defun my-rebuild-project (name-or-path)
+  (let ((project-name (project-name name-or-path)))
+  (when project-name
+    (save-buffer)
+    ;;(sbt-invoke "*compile*" project-name '("clean" "compile") (lambda () (run-at-time 0 nil (lambda () (bury-buffer))))))))
+    (sbt-invoke "*compile*" project-name '("clean" "compile")))))
+                                                                                        
 (defun my-run-project (name-or-path)
-  (if (eq major-mode 'scala-mode)
-    (let ((sbt-name (car (project-metadata name-or-path))))
-    (let ((sbt-path (sbt-project-root (project-path name-or-path))))
-      (save-buffer)
-      (sbt-invoke sbt-name sbt-path "run")))))
-
+  (let ((project-name (project-name name-or-path)))
+  (when project-name
+    (save-buffer)
+    ;;(sbt-invoke "*run*" project-name ("compile" "run")))))
+    (sbt-invoke "*run*" project-name "compile" (lambda ()
+      (insert "\n")
+      (compilation-shell-minor-mode -1)
+      (cd (sbt-project-root (sbt-invoke-project)))
+      ;; todo. infer the correct scala, main class and classpath
+      (comint-exec (current-buffer) "scala" "scala" nil '("-classpath" "./target/scala-2.9.1.final/classes" "fos.Arithmetic")))))))
+                                                                                        
 (defun my-test-project (name-or-path)
-  (if (eq major-mode 'scala-mode)
-    (let ((sbt-name (car (project-metadata name-or-path))))
-    (let ((sbt-path (sbt-project-root (project-path name-or-path))))
-      (save-buffer)
-      (sbt-invoke sbt-name sbt-path "test")))))
+  (let ((project-name (project-name name-or-path)))
+  (when project-name
+    (save-buffer)
+    ;;(sbt-invoke "*test*" project-name "test" (lambda () (run-at-time 0 nil (lambda () (bury-buffer))))))))
+    (sbt-invoke "*test*" project-name "test"))))
+
