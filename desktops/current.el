@@ -1,1 +1,1 @@
-(setq my-current-desktop "fos")
+(setq my-current-desktop "nem")
