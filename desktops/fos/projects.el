@@ -2,6 +2,7 @@
 
 (add-project "scratchpad" "/media/XENO/Dropbox/Projects/Foundations of Software/Scratchpad/src" "scratchpad" "scratchpad")
 (add-project "nb" "/media/XENO/Dropbox/Projects/Foundations of Software/P1 - Numbers and Booleans/src" "nb" "nb")
+(add-project "untyped" "/media/XENO/Dropbox/Projects/Foundations of Software/P1 - Untyped Lambda Calculus/src" "untyped" "untyped")
 (add-project "desktop" "/media/XENO/Dropbox/Software/Emacs/desktops/fos" nil)
 (add-project ".emacs" "/media/XENO/Dropbox/Software/Emacs" nil)
 
