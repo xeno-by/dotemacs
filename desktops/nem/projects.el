@@ -4,7 +4,7 @@
 (add-project "macros" "/home/xeno_by/Projects/Nemerle/macros" nil)
 (add-project "linq" "/home/xeno_by/Projects/Nemerle/linq/Macro" nil)
 (add-project "tests" "/home/xeno_by/Projects/Nemerle/linq/Tests" nil)
-(add-project "play" "/home/xeno_by/Projects/Playground/Nemerle" nil)
+(add-project "play" "/media/XENO/Dropbox/Scratchpad/Nemerle" nil)
 (add-project "desktop" "/media/XENO/Dropbox/Software/Emacs/desktops/nem" nil)
 (add-project ".emacs" "/media/XENO/Dropbox/Software/Emacs" nil)
 

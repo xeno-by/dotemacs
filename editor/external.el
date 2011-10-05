@@ -29,8 +29,10 @@
         (global-set-key (kbd "C-s") 'save-buffer)
         (setq header-line-format tabbar-header-line-format))
       (progn
-        (global-set-key (kbd "<f5>") 'my-load-external-modifications)
-        (global-set-key (kbd "C-s") 'my-overwrite-external-modifications)
-        (setq header-line-format (format "%s. Press F5 to load external changes, C-s to overwrite them"
-          (propertize "This file has been changed externally" 'face '(:foreground "#f00"))))))))
+        (my-after-detected-external-modifications)))))
 
+(defun my-after-detected-external-modifications ()
+  (global-set-key (kbd "<f5>") 'my-load-external-modifications)
+  (global-set-key (kbd "C-s") 'my-overwrite-external-modifications)
+  (setq header-line-format (format "%s. Press F5 to load external changes, C-s to overwrite them"
+    (propertize "This file has been changed externally" 'face '(:foreground "#f00")))))

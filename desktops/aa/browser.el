@@ -1,0 +1,1 @@
+(add-hook 'ecb-activate-hook (lambda () (interactive) (ecb-toggle-ecb-windows)))

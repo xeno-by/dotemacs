@@ -94,6 +94,7 @@
     ((starts-with (buffer-name) "*ensime-sbt*") "Work")
     ((starts-with (buffer-name) "*Find*") "Work")
     ((starts-with (buffer-name) "*grep*") "Work")
+    ((starts-with (buffer-name) "*tex*") "Work")
     ((starts-with (buffer-name) "*delite*") "Work")
     ((starts-with (buffer-name) "*ELP Profiling Results*") "Work")
     ((starts-with (buffer-name) "*vc") "Work")

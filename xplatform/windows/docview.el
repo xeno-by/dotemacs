@@ -1,0 +1,1 @@
+(setq doc-view-ghostscript-program (executable-find "gswin32c"))

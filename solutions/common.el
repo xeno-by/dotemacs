@@ -3,3 +3,4 @@
 (setq ecb-basic-buffer-sync 'always) ;; eats lots of CPU, but provides more pleasant UX
 (setq ecb-add-path-for-not-matching-files (quote (nil))) ;; essential for performance
 (setq ecb-vc-enable-support nil) ;; having icons is nice, but having them fucked up 80% of the time is not!
+(setq ecb-auto-update-methods-after-save nil) ;; otherwise ECB throws exceptions after Ctrl+S when the tree widget is hidden

@@ -173,7 +173,7 @@
   "This hook is run when nemerle-mode is loaded, or a new nemerle-mode
 buffer created.  This is a good place to put your customizations.")
 
-(defvar nemerle-basic-offset 4
+(defvar nemerle-basic-offset 2
   "Indentation of blocks in nemerle.")
 
 (defvar nemerle-match-case-offset 2
