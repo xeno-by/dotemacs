@@ -30,7 +30,7 @@
 (defun my-ecb-omni-diff ()
   (interactive)
   (if (eq (current-buffer) (get-buffer ecb-directories-buffer-name))
-    (my-ecb-delete)
+    (my-ecb-diff)
     (progn
       (my-ecb-goto-window-directories)
       (my-ecb-diff)
