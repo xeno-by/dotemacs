@@ -4102,15 +4102,13 @@ This is only non-nil in reflog buffers.")
     (progn
       (require 'vc)
       (let ((backend (vc-backend path)))
-      (let ((curr (vc-working-revision path)))
-      (princ "curr: ") (princ curr)
-      (let ((prev (vc-call-backend backend 'previous-revision path curr)))
-      (princ ", prev: ") (princ prev)
+      (let ((base (vc-working-revision path)))
+      (let ((prev (vc-call-backend backend 'previous-revision path base)))
       ;; this bury/unbury stuff makes sure that we return back to magit buffer after we're done with vc-diff
       (bury-buffer)
       (unbury-buffer)
       (cd (file-name-directory path))
-      (vc-diff-internal t (list backend (list path)) prev curr)))))
+      (vc-diff-internal t (list backend (list path)) base nil)))))
     (magit-diff-with-mark))))))
 
 ;;; Wazzup
