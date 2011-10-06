@@ -19,22 +19,20 @@
   (interactive)
   (let ((node (tree-buffer-get-node-at-point)))
   (when node
-  (let ((file (tree-node->data node)))
-    (if (file-directory-p file)
-      (progn
-        (vc-dir file))
-      (progn
-        (with-temp-buffer
-          (find-file file)
-          (call-interactively 'vc-diff))))))))
+    (let ((file (tree-node->data node)))
+    (my-diff file)))))
 (defun my-ecb-omni-diff ()
   (interactive)
-  (if (eq (current-buffer) (get-buffer ecb-directories-buffer-name))
-    (my-ecb-diff)
-    (progn
-      (my-ecb-goto-window-directories)
-      (my-ecb-diff)
-      (my-ecb-goto-window-edit-last))))
+  (cond
+   ((eq (current-buffer) (get-buffer ecb-directories-buffer-name)) (my-ecb-diff))
+   ((eq major-mode 'dired-mode) (my-diff dired-directory))
+   (t (my-diff (buffer-file-name)))))
+(defun my-diff (file)
+  (cond
+   ((and file (file-directory-p file)) (vc-dir file))
+   ((and file (not (file-directory-p file))) (with-temp-buffer
+     (find-file file)
+     (call-interactively 'vc-diff)))))
 (global-set-key (kbd "s-=") 'my-ecb-omni-diff)
 (global-set-key (kbd "C-=") 'my-ecb-omni-diff)
 (add-hook 'ecb-directories-buffer-after-create-hook (lambda () (local-set-key (kbd "=") 'my-ecb-diff)))
