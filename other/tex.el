@@ -65,7 +65,7 @@
       (select-window result-window)
       (when (not (equal (buffer-file-name) result-filename))
         (find-file result-filename)
-        (run-at-time 0.25 nil (lambda () (image-forward-hscroll 10)))))))))))
+        (run-at-time 0.25 nil (lambda () (image-set-window-hscroll 10)))))))))))
 
 (defun my-latex-hide-preview ()
   (when (my-latex-previewing)
