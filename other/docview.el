@@ -10,5 +10,6 @@
   (bookmark-set bookmark)
   ad-do-it
   (bookmark-jump bookmark)
-  (bookmark-delete bookmark)))
+  (bookmark-delete bookmark)
+  (run-at-time 0.25 nil (lambda () (image-forward-hscroll 10)))))
 
