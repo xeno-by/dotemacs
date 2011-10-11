@@ -1,3 +1,4 @@
+desktops/current.el
 desktop
 desktop.lock
 session.*
@@ -7,4 +8,5 @@ auto-save-list/*
 *~
 \#*
 .\#*
+
 

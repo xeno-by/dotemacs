@@ -2,7 +2,7 @@
 
 (add-project "scratchpad" "/media/XENO/Dropbox/Projects/Foundations of Software/Scratchpad/src" "scratchpad" "scratchpad")
 (add-project "nb" "/media/XENO/Dropbox/Projects/Foundations of Software/P1 - Numbers and Booleans/src" "nb" "nb")
-(add-project "untyped" "/media/XENO/Dropbox/Projects/Foundations of Software/P1 - Untyped Lambda Calculus/src" "untyped" "untyped")
+(add-project "untyped" "/media/XENO/Dropbox/Projects/Foundations of Software/P2 - Untyped Lambda Calculus/src" "untyped" "untyped")
 (add-project "desktop" "/media/XENO/Dropbox/Software/Emacs/desktops/fos" nil)
 (add-project ".emacs" "/media/XENO/Dropbox/Software/Emacs" nil)
 
@@ -40,13 +40,12 @@
   (let ((project-name (project-name name-or-path)))
   (when project-name
     (if (buffer-file-name) (save-buffer))
-    ;;(sbt-invoke "*run*" project-name ("compile" "run")))))
     (sbt-invoke "*run*" project-name "compile" (lambda ()
       (insert "\n")
       (compilation-shell-minor-mode -1)
       (cd (sbt-project-root (sbt-invoke-project)))
       ;; todo. infer the correct scala, main class and classpath
-      (comint-exec (current-buffer) "scala" "scala" nil '("-classpath" "./target/scala-2.9.1.final/classes" "fos.Arithmetic")))))))
+      (comint-exec (current-buffer) "scala" "scala" nil '("-classpath" "./target/scala-2.9.1.final/classes" "fos.Untyped")))))))
                                                                                         
 (defun my-test-project (name-or-path)
   (let ((project-name (project-name name-or-path)))
