@@ -1,6 +1,6 @@
 ;(global-auto-revert-mode 1)
 (defun ask-user-about-supersession-threat (fn) "blatantly ignore files that changed on disk")
-(run-with-timer 0 2 'my-check-external-modifications)
+(run-with-timer 0 10 'my-check-external-modifications)
 (add-hook 'after-save-hook 'my-check-external-modifications)
 (add-hook 'after-revert-hook 'my-check-external-modifications)
 

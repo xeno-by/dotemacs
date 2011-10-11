@@ -21,8 +21,8 @@
 (linux (load-file (concat (file-name-directory load-file-name) "/" "xplatform" "/" "linux" "/" "bootstrapper.el")))
 (t (error "unsupported operating system")))
 
-(load-all-files-from-dir (concat emacs-root "/" "utils"))
-(load-all-files-from-dir (concat emacs-root "/" "editor"))
-(load-all-files-from-dir (concat emacs-root "/" "other"))
-(load-file (concat emacs-root "/" "solutions" "/" "bootstrapper.el"))
+(load-all-files-from-dir (concat emacs-root "/" "utils")) ;; this is okay for performance, nothing top-level here
+(load-all-files-from-dir (concat emacs-root "/" "editor")) ;; this is okay for performance, i only had to disable linum-mode
+(load-all-files-from-dir (concat emacs-root "/" "other")) ;; scala-mode lags, but only once per buffer. i believe, this has to do with syntax coloring
+;;(load-file (concat emacs-root "/" "solutions" "/" "bootstrapper.el"))
 
