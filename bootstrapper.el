@@ -24,5 +24,5 @@
 (load-all-files-from-dir (concat emacs-root "/" "utils")) ;; this is okay for performance, nothing top-level here
 (load-all-files-from-dir (concat emacs-root "/" "editor")) ;; this is okay for performance, i only had to disable linum-mode
 (load-all-files-from-dir (concat emacs-root "/" "other")) ;; scala-mode lags, but only once per buffer. i believe, this has to do with syntax coloring
-;;(load-file (concat emacs-root "/" "solutions" "/" "bootstrapper.el"))
+(load-file (concat emacs-root "/" "solutions" "/" "bootstrapper.el"))
 
