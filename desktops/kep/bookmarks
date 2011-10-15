@@ -1,0 +1,15 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("compiler phases"
+ (filename . "c:/cygwin/home/xeno_by/Projects/Kepler/src/compiler/scala/tools/nsc/Global.scala")
+ (front-context-string . "  protected def ")
+ (rear-context-string . "ame time.\n   */\n")
+ (position . 21493))
+("Add given member to given class"
+ (filename . "c:/cygwin/home/xeno_by/Projects/Kepler/src/compiler/scala/tools/nsc/transform/Mixin.scala")
+ (front-context-string . "  def addMember(")
+ (rear-context-string . "mixed-in.\n   */\n")
+ (position . 5462))
+)
