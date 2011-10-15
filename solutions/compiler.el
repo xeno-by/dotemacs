@@ -31,6 +31,9 @@
       (next-error-follow-minor-mode 1))))))
 
 (defadvice compilation-find-file (around customize-compilation-find-file activate)
+  ;; xeno.by: arguable, though useful
+  (when (not (sole-window)) (delete-window))
+
   (let ((marker (ad-get-arg 0)))
   (let ((filename (ad-get-arg 1)))
   (let ((directory (ad-get-arg 2)))

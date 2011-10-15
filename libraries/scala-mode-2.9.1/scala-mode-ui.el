@@ -90,22 +90,22 @@
 
   ([scala feature] (cons "Features" (make-sparse-keymap "Features")))
 
-  ([scala feature apropos]  '(menu-item "Tag apropos"		        tags-apropos))
-  ([scala feature search]   '(menu-item "Tag search"		        tags-search))
-  ([scala feature find]     '(menu-item "Tag find"		        find-tag))
-  ([scala feature comp]	    '(menu-item "Tag complete word"	        scala-mode-feature-tags-complete))
-  ([scala feature load]	    '(menu-item "Load TAGS file"		scala-mode-feature-tags-load))
-  ([scala feature create]   '(menu-item "Create TAGS file"		scala-mode-feature-tags-create))
+  ([scala feature apropos]  '(menu-item "Tag apropos"           tags-apropos))
+  ([scala feature search]   '(menu-item "Tag search"            tags-search))
+  ([scala feature find]     '(menu-item "Tag find"            find-tag))
+  ([scala feature comp]     '(menu-item "Tag complete word"         scala-mode-feature-tags-complete))
+  ([scala feature load]     '(menu-item "Load TAGS file"    scala-mode-feature-tags-load))
+  ([scala feature create]   '(menu-item "Create TAGS file"    scala-mode-feature-tags-create))
 
   ([scala feature sep1]     '("---"))
 
-  ([scala feature speedbar] '(menu-item "Speedbar Focus"		speedbar-get-focus))
+  ([scala feature speedbar] '(menu-item "Speedbar Focus"    speedbar-get-focus))
 
   ([scala feature sep0]     '("---"))
 
   ([scala feature electric] '(menu-item "Toggle Scala Electric Mode" scala-electric-mode
-					:button (:toggle . (scala-mode-feature-electric-active-p))
-					:help "Toggle on/off the electric insert mode for Scala files"))
+          :button (:toggle . (scala-mode-feature-electric-active-p))
+          :help "Toggle on/off the electric insert mode for Scala files"))
 
   ([scala sep1]           '("---"))
 
@@ -131,17 +131,17 @@
    ([menu-bar] scala-mode-menu-bar-map)
 
    ;; Attach keyboard Shortcuts
-   ([(control tab)]            'scala-undent-line)
+   ([(backtab)]            'scala-undent-line)
    ([backspace]                'backward-delete-char-untabify)
-   		                
+                      
    ("\r"                       'scala-newline)
 
    ([f1]                       'speedbar-get-focus)
-			        
+              
    ([(control c)(control l)]   'scala-load-file)
    ([(control c)(control r)]   'scala-eval-region)
    ([(control c)(control b)]   'scala-eval-buffer)
-			        
+              
    ([(control c)(control c)]   'comment-region)
 
    ("}"                        'scala-electric-brace)
