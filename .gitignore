@@ -8,8 +8,8 @@ auto-save-list/*
 *~
 \#*
 .\#*
-*/bin/*
-*/obj/*
+bin
+obj
 *.user
 *.ReSharper
 *.suo

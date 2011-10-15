@@ -32,14 +32,14 @@ namespace EmacsRunner
             {
                 if (Regex.IsMatch(arg0, @"^\w+$"))
                 {
-                    var appdata = Environment.GetEnvironmentVariable("APPDATA");
-                    if (appdata != null && !appdata.EndsWith("/") && !appdata.EndsWith("\\")) appdata += "\\";
-                    var dotemacs = appdata + ".emacs.d\\";
+                    var home = Environment.GetEnvironmentVariable("USERPROFILE");
+                    if (home != null && !home.EndsWith("/") && !home.EndsWith("\\")) home += "\\";
+                    var dotemacs = home + ".emacs.d\\";
             
                     var desktop_home = dotemacs + "desktops\\" + arg0 + "\\";
                     if (!Directory.Exists(desktop_home))
                     {
-                        MessageBox.Show("%EMACS_HOME%\\desktops\\" + arg0 + " (expanded to " + desktop_home + ") does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("%USERPROFILE%\\.emacs.d\\desktops\\" + arg0 + " (expanded to " + desktop_home + ") does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
