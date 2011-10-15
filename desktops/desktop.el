@@ -15,6 +15,7 @@
 (add-to-list 'desktop-globals-to-save 'my-solution-grep-prev-string)
 (add-to-list 'desktop-globals-to-save 'my-solution-grep-prev-flavor)
 (add-to-list 'desktop-globals-to-save 'my-solution-grep-prev-filter)
+(add-to-list 'desktop-globals-to-save 'my-sbt-run-prev-main-class)
 
 ;; unused at the moment. possibly, will be helpful in the future
 ;(setq desktop-buffers-not-to-save (concat 
