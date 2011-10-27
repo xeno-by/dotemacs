@@ -18,16 +18,16 @@
 (global-set-key (kbd "C-c 8") 'my-goto-favorite-8) ;; win + 8
 (global-set-key (kbd "C-c 9") 'my-goto-favorite-9) ;; win + 9
 (global-set-key (kbd "C-c 0") 'my-goto-favorite-10) ;; win + 10
-(global-set-key (kbd "C-c <f1>") 'my-ecb-omni-rename) ;; win + f2
-(global-set-key (kbd "C-c <f2>") 'my-ecb-omni-create-directory) ;; win + shift + insert
-(global-set-key (kbd "C-c <f3>") 'my-ecb-omni-create-file) ;; win + insert
-(global-set-key (kbd "C-c <f4>") 'my-ecb-omni-delete) ;; win + delete
+(global-set-key (kbd "C-c <f1>") 'my-omni-rename) ;; win + f2
+(global-set-key (kbd "C-c <f2>") 'my-omni-create-directory) ;; win + shift + insert
+(global-set-key (kbd "C-c <f3>") 'my-omni-create-file) ;; win + insert
+(global-set-key (kbd "C-c <f4>") 'my-omni-delete) ;; win + delete
 (global-set-key (kbd "C-c <f5>") 'my-unbury-buffer) ;; win + escape
 (global-set-key (kbd "C-c <f6>") 'move-buffer-to-other-frame) ;; win + `
 (global-set-key (kbd "C-c <f7>") 'eval-expression) ;; win + :
 (global-set-key (kbd "C-c <f8>") 'describe-key) ;; win + /
-(global-set-key (kbd "C-c <f9>") 'my-ecb-omni-diff) ;; win + =
-(global-set-key (kbd "C-c <f10>") 'my-ecb-create-directory) ;; win + +
+(global-set-key (kbd "C-c <f9>") 'my-omni-diff) ;; win + =
+(global-set-key (kbd "C-c <f10>") 'my-omni-create-directory) ;; win + +
 (global-set-key (kbd "C-c <f11>") 'other-frame) ;; win + tab
 (global-set-key (kbd "C-c <f12>") 'my-bury-buffer) ;; ctrl + escape
-(global-set-key (kbd "C-c <f13>") 'my-ecb-omni-rename) ;; win + shift + f6
+(global-set-key (kbd "C-c <f13>") 'my-omni-rename) ;; win + shift + f6

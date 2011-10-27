@@ -36,5 +36,6 @@
     (set-my-docview-timer (run-at-time 0.2 0.5 (lambda () (when (doc-view-already-converted-p)
       (cancel-timer (my-docview-timer))
       (doc-view-goto-page (my-docview-page))
-      (image-set-window-hscroll (my-docview-hscroll))
+;;      (image-set-window-hscroll (my-docview-hscroll))
+      (image-set-window-hscroll 10)
       (image-set-window-vscroll (my-docview-vscroll)))))))))

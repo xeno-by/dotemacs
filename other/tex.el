@@ -57,7 +57,7 @@
       (t nil))))
     (let ((source-filename (with-current-buffer (window-buffer source-window) (buffer-file-name))))
     (let ((result-filename (my-latex-result source-filename)))
-    (when (and (my-latex-source-p source-filename) (file-exists-p result-filename))
+    (when (and (my-latex-source-p source-filename) result-filename (file-exists-p result-filename))
       (let ((result-window (cond 
         ((left-window) (active-window))
         ((right-window) (right-window))

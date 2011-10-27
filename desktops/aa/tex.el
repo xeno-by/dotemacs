@@ -1,3 +1,28 @@
+(defun my-latex-result (filename)
+  (if filename
+    (let ((raw (substring filename 0 (- (length filename) (length (file-name-extension filename))))))
+    (let ((pdf (concat raw "pdf")))
+    (let ((pdf-modtime (if (file-exists-p pdf) (nth 5 (file-attributes pdf)) nil)))
+    (let ((dvi (concat raw "dvi")))
+    (let ((dvi-modtime (if (file-exists-p dvi) (nth 5 (file-attributes pdf)) nil)))
+    (let ((filename (cond
+      ((and pdf-modtime dvi-modtime) pdf) ;; todo. pick the newest file
+      ((and pdf-modtime (not dvi-modtime)) pdf)
+      ((and (not pdf-modtime) dvi-modtime) dvi)
+      (t nil))))
+
+    (when (not filename)
+      (let ((master-filename nil))
+        (dolist (file (directory-files (file-name-directory raw)))
+           (if (or (string-match "HW\\([[:digit:]][[:digit:]]\\).*\\.tex" file)
+                   (string-match "Test\\([[:digit:]][[:digit:]]\\).*\\.tex" file))
+               (setq master-filename (concat (file-name-directory raw) file))))
+        (when (and master-filename (not (string= filename master-filename)))
+          (setq filename (my-latex-result master-filename)))))
+
+    filename))))))
+   nil))
+
 ;; todo. this does not work. why?!
 ;;(set (make-local-variable 'tex-compileXXX) YYY)
 (if (not (boundp 'tex-compile-project)) (setq tex-compile-project (make-hash-table)))
@@ -8,6 +33,12 @@
 (defun set-tex-compile-filename (value) (puthash (buffer-name) value tex-compile-filename))
 
 (defun my-tex-compile (project filename)
+  ;; todo. this does not work. why?!
+  ;;(set (make-local-variable 'tex-compile-project) project)
+  ;;(set (make-local-variable 'tex-compile-filename) filename)
+  (set-tex-compile-project project)
+  (set-tex-compile-filename filename)
+
   (let ((buffer-name "*tex*"))
   (when (and buffer-name project)
     (let ((target-buffer (get-buffer buffer-name)))
@@ -82,7 +113,7 @@
 
     (set (make-local-variable 'after-change-functions) '((lambda (start stop prev-length) 
       (let ((content (buffer-substring-no-properties (point-min) (point-max))))
-      (when (and (string-match "Process pdflatex finished" content)
+      (when (and (string-match "Process pdflatex\\(<[[:digit:]]+>\\)? finished" content)
                  (not (string-match "LaTeX Error" content)))
         (let ((raw (substring (tex-compile-filename) 0 (- (length (tex-compile-filename)) (length (file-name-extension (tex-compile-filename)))))))
         (let ((pdf (concat raw "pdf")))
@@ -95,8 +126,16 @@
               (revert-buffer t t))))
         (bury-buffer)))))))))
 
+    (let ((master-file nil))
+      (dolist (file (directory-files (file-name-directory (tex-compile-filename))))
+         (if (or (string-match "HW\\([[:digit:]][[:digit:]]\\).*\\.tex" file)
+                 (string-match "Test\\([[:digit:]][[:digit:]]\\).*\\.tex" file))
+             (setq master-file file)))
+      (when master-file 
+        (set-tex-compile-filename (concat (file-name-directory (tex-compile-filename)) master-file))))
+
     (cd (project-path (tex-compile-project)))
-    (comint-exec (current-buffer) "pdflatex" "pdflatex" nil (list file-name)))))
+    (comint-exec (current-buffer) "pdflatex" "pdflatex" nil (list (tex-compile-filename))))))
 
 (defadvice recompile (around override-recompile-for-console activate)
   (if (tex-compile-project)

@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("compiler phases"
+(("gen synthetic stuff for case classes"
+ (filename . "c:/cygwin/home/xeno_by/Projects/Kepler/src/compiler/scala/tools/nsc/typechecker/Namers.scala")
+ (front-context-string . "ass\n     *   cas")
+ (rear-context-string . " Given a case cl")
+ (position . 53723))
+("compiler phases"
  (filename . "c:/cygwin/home/xeno_by/Projects/Kepler/src/compiler/scala/tools/nsc/Global.scala")
  (front-context-string . "  protected def ")
  (rear-context-string . "ame time.\n   */\n")

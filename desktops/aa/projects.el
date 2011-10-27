@@ -1,6 +1,11 @@
 ;; -*- mode: emacs-lisp  -*-
 
-(add-project "hwk" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks" nil)
+(add-project "hw01" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/01" nil)
+(add-project "hw02" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/02" nil)
+(add-project "hw03" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/03" nil)
+(add-project "hw04" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/04" nil)
+(add-project "test01" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Tests/01" nil)
+(add-project "notes" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Notes" nil)
 (add-project "desktop" "/media/XENO/Dropbox/Software/Emacs/desktops/aa" nil)
 (add-project ".emacs" "/media/XENO/Dropbox/Software/Emacs" nil)
 
