@@ -1,0 +1,10 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("goto-definition-bookmark.295452931"
+ (filename . "~/.emacs.d/solutions/files.el")
+ (front-context-string . "s)))\n  (let ((se")
+ (rear-context-string . "ion-abbrevd-file")
+ (position . 91))
+)

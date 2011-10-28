@@ -25,7 +25,8 @@
   (let ((include-paths (list filter)))
   (let ((include-argument (mapconcat (lambda (pattern) (concat " -path '" pattern "'")) include-paths " ")))
   ;; todo. quote exclude patterns properly
-  (let ((exclude-files (list "*~" "*.~*" "#*#" "desktop")))
+  (let ((exclude-files (list "*~" "*.~*" "#*#" "desktop" "desktop.lock" "bookmarks" "ac-comphist.dat"
+                             "*.aux" "*.log" "*.nav" "*.out" "*.pdf" "*.pptx" "*.docx" "*.zip" "*.snm" "*.toc")))
   (let ((exclude-dirs (list ".git" "lib_managed" "project" "target" "Emacs/libraries")))
   (let ((exclude-argument (mapconcat (lambda (pattern) (concat " ! -name '" pattern "'")) exclude-files " ")))
   (let ((exclude-argument (concat exclude-argument " " (mapconcat (lambda (pattern) (concat " ! -path '*/" pattern "/*'")) exclude-dirs " "))))
