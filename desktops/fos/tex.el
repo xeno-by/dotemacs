@@ -1,3 +1,21 @@
+(defun my-latex-show-preview ()
+  (when (not (my-latex-previewing))
+    (let ((source-window (cond
+      ((left-window) (left-window))
+      ((right-window) (active-window))
+      (t nil))))
+    (let ((source-filename (with-current-buffer (window-buffer source-window) (buffer-file-name))))
+    (let ((result-filename (my-latex-result source-filename)))
+    (when (and (my-latex-source-p source-filename) result-filename (file-exists-p result-filename))
+      (let ((result-window (cond 
+        ((left-window) (active-window))
+        ((right-window) (right-window))
+        (t (split-window-horizontally)))))
+      (select-window result-window)
+      (when (not (equal (buffer-file-name) result-filename))
+        (find-file result-filename)
+        (run-at-time 0.25 nil (lambda () (image-set-window-hscroll 0)))))))))))
+
 (defun my-latex-result (filename)
   (if filename
     (let ((raw (substring filename 0 (- (length filename) (length (file-name-extension filename))))))
@@ -112,9 +130,9 @@
     (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
 
     (set (make-local-variable 'after-change-functions) '((lambda (start stop prev-length) 
-      (let ((content (buffer-substring-no-properties (point-min) (point-max))))
-      (when (or (string-match "Process pdflatex\\(<[[:digit:]]+>\\)? finished" content)
-                 (string-match "Process pdflatex\\(<[[:digit:]]+>\\)? exited abnormally" content))
+      (let ((content (buffer-substring-no-properties (- (point-max) 50) (point-max))))
+      (when (and (string-match "Process pdflatex\\(<[[:digit:]]+>\\)? finished" content)
+                 (not (string-match "LaTeX Error" content)))
         (let ((raw (substring (tex-compile-filename) 0 (- (length (tex-compile-filename)) (length (file-name-extension (tex-compile-filename)))))))
         (let ((pdf (concat raw "pdf")))
         (let ((dvi (concat raw "dvi")))
@@ -124,7 +142,7 @@
                  (equal (buffer-file-name) pdf)
                  (equal (buffer-file-name) dvi))
               (revert-buffer t t))))
-        (run-at-time 0.1 nil (lambda () (bury-buffer)))))))))))
+        (bury-buffer)))))))))
 
     (let ((master-file nil))
       (dolist (file (directory-files (file-name-directory (tex-compile-filename))))
@@ -133,17 +151,6 @@
              (setq master-file file)))
       (when master-file 
         (set-tex-compile-filename (concat (file-name-directory (tex-compile-filename)) master-file))))
-
-    (dolist (file (directory-files (file-name-directory (tex-compile-filename))))
-      (let ((src (file-name-nondirectory (file-name-sans-extension (tex-compile-filename)))))
-      (let ((name (file-name-nondirectory (file-name-sans-extension file))))
-      (let ((extension (file-name-extension file)))
-        (when (and (string= src name)
-                   (not (file-directory-p file))
-                   (not (string= extension "tex"))
-                   (not (string= extension "toc"))
-                   (not (string= file (tex-compile-filename))))
-          (delete-file file))))))
 
     (cd (project-path (tex-compile-project)))
     (comint-exec (current-buffer) "pdflatex" "pdflatex" nil (list (tex-compile-filename))))))

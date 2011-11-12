@@ -4,6 +4,8 @@
 (add-project "hw02" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/02" nil)
 (add-project "hw03" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/03" nil)
 (add-project "hw04" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/04" nil)
+(add-project "hw05" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/05" nil)
+(add-project "hw06" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/06" nil)
 (add-project "test01" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Tests/01" nil)
 (add-project "notes" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Notes" nil)
 (add-project "desktop" "/media/XENO/Dropbox/Software/Emacs/desktops/aa" nil)
