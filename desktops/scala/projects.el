@@ -123,7 +123,7 @@
         (cd (sbt-project-root (sbt-invoke-project)))
         ;; todo. infer the correct scala and classpath
         (insert (concat "Running " my-sbt-run-prev-main-class "...\n"))
-        (comint-exec (current-buffer) "scala" "scala" nil (list "-classpath" "./target/scala-2.9.1/classes;c:/PROGRA~1/Java/JDK16~1.0_2/lib/tools.jar" my-sbt-run-prev-main-class))))))))
+        (comint-exec (current-buffer) "scala" "scala" nil (list "-classpath" "./target/scala-2.10.0-SNAPSHOT/classes;c:/PROGRA~1/Java/JDK16~1.0_2/lib/tools.jar" my-sbt-run-prev-main-class))))))))
                                                                                         
 (defun my-test-project (name-or-path)
   (let ((project-name "scratchpad"))
