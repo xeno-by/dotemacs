@@ -7,6 +7,7 @@
 (add-project "hw05" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/05" nil)
 (add-project "hw06" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Homeworks/06" nil)
 (add-project "test01" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Tests/01" nil)
+(add-project "test02" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Tests/02" nil)
 (add-project "notes" "/media/XENO/Dropbox/Projects/Advanced Algorithms/Notes" nil)
 (add-project "desktop" "/media/XENO/Dropbox/Software/Emacs/desktops/aa" nil)
 (add-project ".emacs" "/media/XENO/Dropbox/Software/Emacs" nil)
@@ -14,15 +15,15 @@
 (setq tool-buffers-autofollow nil)
 (setq tool-buffers-display-in-bottom-window t)
 (setq tool-buffers-display-in-right-window nil)
-                                                                                        
-(defun my-compile-project (name-or-path &optional file-name) 
+
+(defun my-compile-project (name-or-path &optional file-name)
   (let ((project-name (project-name name-or-path)))
   (let ((file-name (if file-name file-name (buffer-file-name))))
   (when (and project-name file-name)
     (if (equal file-name (buffer-file-name)) (save-buffer))
     (my-tex-compile project-name file-name)))))
 
-(defun my-rebuild-project (name-or-path &optional file-name) 
+(defun my-rebuild-project (name-or-path &optional file-name)
   (let ((project-name (project-name name-or-path)))
   (let ((file-name (if file-name file-name (buffer-file-name))))
   (when (and project-name file-name)
