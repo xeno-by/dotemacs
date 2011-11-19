@@ -1,5 +1,9 @@
 #SingleInstance Force 
 
+^+`::
+Run, "C:\Users\xeno.by\Desktop\Far Manager.lnk"
+return
+
 #1::
 Send ^c
 Send 1
