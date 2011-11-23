@@ -1,23 +1,23 @@
-(global-set-key (kbd "C-S-b") (lambda () 
-  (interactive) 
-  (if (fboundp 'my-compile-project) 
-    (my-compile-project (buffer-file-name (current-buffer)))
+(global-set-key (kbd "C-S-b") (lambda ()
+  (interactive)
+  (if (fboundp 'my-compile-project)
+    (my-compile-project (current-buffer))
     (message "my-compile-project is not implemented"))))
 
 ;; sorry, one more core emacs hotkey redefined...
 (define-prefix-command 'my-compile-map)
 (global-set-key (kbd "M-b") 'my-compile-map)
 
-(define-key my-compile-map (kbd "r") (lambda () 
-  (interactive) 
-  (if (fboundp 'my-rebuild-project) 
-    (my-rebuild-project (buffer-file-name (current-buffer)))
+(define-key my-compile-map (kbd "r") (lambda ()
+  (interactive)
+  (if (fboundp 'my-rebuild-project)
+    (my-rebuild-project (current-buffer))
     (message "my-rebuild-project is not implemented"))))
 
-(define-key my-compile-map (kbd "M-r") (lambda () 
-  (interactive) 
-  (if (fboundp 'my-rebuild-project) 
-    (my-rebuild-project (buffer-file-name (current-buffer)))
+(define-key my-compile-map (kbd "M-r") (lambda ()
+  (interactive)
+  (if (fboundp 'my-rebuild-project)
+    (my-rebuild-project (current-buffer))
     (message "my-rebuild-project is not implemented"))))
 
 (setq next-error-highlight t)
@@ -43,7 +43,7 @@
       (progn
         (let ((filename (solution-unabbrev-string filename)))
         (if (file-exists-p filename)
-          (progn 
+          (progn
             (let ((new-filename (file-name-nondirectory filename)))
             (let ((new-directory (file-name-directory filename)))
             (ad-set-arg 1 new-filename)
@@ -65,7 +65,7 @@
                    (ad-set-arg 1 new-filename)
                    (ad-set-arg 2 new-directory)
                    ad-do-it))))
-                 (t 
+                 (t
                    (let ((filename (solution-unabbrev-string (ido-completing-read (concat "Find this " compilation-error " in: ") matches nil t))))
                    (let ((new-filename (file-name-nondirectory filename)))
                    (let ((new-directory (file-name-directory filename)))
@@ -93,8 +93,8 @@ and overlay is highlighted between MK and END-MK."
 (let ((active-window compilation-window))
 (let ((top-window (top-window active-window)))
 (let ((left-window (left-window active-window)))
-(let ((target-window 
- (cond 
+(let ((target-window
+ (cond
   ((and (boundp 'tool-buffers-display-in-bottom-window) tool-buffers-display-in-bottom-window)
    (if top-window top-window active-window))
   ((and (boundp 'tool-buffers-display-in-right-window) tool-buffers-display-in-right-window)
