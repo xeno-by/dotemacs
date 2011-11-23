@@ -31,6 +31,7 @@
       (next-error-follow-minor-mode 1))))))
 
 (defadvice compilation-find-file (around customize-compilation-find-file activate)
+  (message "hey yo")
   ;; xeno.by: arguable, though useful
   (when (not (sole-window)) (delete-window))
 

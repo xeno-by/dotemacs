@@ -48,7 +48,7 @@
     (set (make-local-variable 'comint-output-history) "")
 
     (set (make-local-variable 'compilation-error-regexp-alist)
-         '(("^\\[error\\] \\([_.a-zA-Z0-9 :\\\\/-]+[.]scala\\):\\([0-9]+\\):"
+         '(("\\([_.a-zA-Z0-9 :\\\\/-]+[.]scala\\):\\([0-9]+\\):"
             1 2 nil 2 nil)))
     (compilation-shell-minor-mode t)
 
@@ -100,8 +100,8 @@
           (t (error (concat "unsupported command " (myke-command))))))
       (when (string-match (concat "Process " (myke-command) " exited abnormally") content)
         (cond
-          ((string= (myke-command) "compile") ())
-          ((string= (myke-command) "rebuild") ())
+          ((string= (myke-command) "compile") (goto-char (point-min)) (compilation-next-error 1))
+          ((string= (myke-command) "rebuild") (goto-char (point-min)) (compilation-next-error 1))
           ((string= (myke-command) "run") ())
           ((string= (myke-command) "repl") ())
           ((string= (myke-command) "test") ())
