@@ -1,3 +1,5 @@
+(require 'compile)
+
 (global-set-key (kbd "C-S-b") (lambda ()
   (interactive)
   (if (fboundp 'my-compile-project)
