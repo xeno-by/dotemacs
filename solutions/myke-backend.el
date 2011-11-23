@@ -112,7 +112,7 @@
           ((string= (myke-command) "push") ())
           (t (error (concat "unsupported command " (myke-command))))))))))
 
-    ;; (comint-exec (current-buffer) (myke-command) "myke" nil (list "/v" (myke-command) target))))))
+;;    (comint-exec (current-buffer) (myke-command) "myke" nil (list "/v" (myke-command) target))))))
     (comint-exec (current-buffer) (myke-command) "myke" nil (list (myke-command) target))))))
 
 (defadvice recompile (around override-recompile-for-sbt activate)
