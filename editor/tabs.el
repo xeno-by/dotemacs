@@ -14,21 +14,21 @@
 (global-set-key (kbd "<C-escape>") 'my-bury-buffer)
 (global-set-key (kbd "<s-escape>") 'my-unbury-buffer)
 
-(global-set-key (kbd "<C-tab>") (lambda () 
-  (interactive) 
-  (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name)) 
+(global-set-key (kbd "<C-tab>") (lambda ()
+  (interactive)
+  (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name))
     (tabbar-forward-tab))))
-(global-set-key (kbd "<C-S-iso-lefttab>") (lambda () 
-  (interactive) 
-  (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name)) 
+(global-set-key (kbd "<C-S-iso-lefttab>") (lambda ()
+  (interactive)
+  (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name))
     (tabbar-backward-tab))))
-(global-set-key (kbd "<C-S-tab>") (lambda () 
-  (interactive) 
-  (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name)) 
+(global-set-key (kbd "<C-S-tab>") (lambda ()
+  (interactive)
+  (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name))
     (tabbar-backward-tab))))
 
-(global-set-key (kbd "<C-f4>") (lambda () 
-  (interactive) 
+(global-set-key (kbd "<C-f4>") (lambda ()
+  (interactive)
   (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name))
     (let ((buffer (current-buffer)))
       ;; bury works better than simply kill
@@ -36,12 +36,12 @@
       ;; while the latter sometime does not
       (bury-buffer)
       (kill-buffer buffer)))))
-(global-set-key (kbd "<S-f4>") (lambda () 
-  (interactive) 
+(global-set-key (kbd "<S-f4>") (lambda ()
+  (interactive)
   (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name))
     (delete-window))))
-(global-set-key (kbd "<C-S-f4>") (lambda () 
-  (interactive) 
+(global-set-key (kbd "<C-S-f4>") (lambda ()
+  (interactive)
   (unless (and (boundp 'ecb-directories-buffer-name) (string= (buffer-name) ecb-directories-buffer-name))
     (let ((current-frame (window-configuration-frame (current-window-configuration))))
     (let ((current-frame-index (position current-frame (frame-list))))
@@ -54,7 +54,7 @@
       (dolist (b (tabbar-buffer-list))
         (if (and (not (eq current-buffer b))
                  (not (eq other-buffer b))
-                 (string= 
+                 (string=
                    (car (funcall tabbar-buffer-groups-function))
                    (car (with-current-buffer b (funcall tabbar-buffer-groups-function)))))
           (kill-buffer b)))
@@ -70,7 +70,7 @@
 
 (setq *tabbar-ignore-buffers* '("foo" "bar")) ;; set to whatever you'll need in future
 
-(setq tabbar-buffer-list-function (lambda () 
+(setq tabbar-buffer-list-function (lambda ()
   (remove-if (lambda (buffer)
     (and (not (eq (current-buffer) buffer)) ; Always include the current buffer.
          (loop for name in *tabbar-ignore-buffers* ;remove buffer name in this list.
@@ -94,6 +94,7 @@
     ((starts-with (buffer-name) "*ensime-sbt*") "Work")
     ((starts-with (buffer-name) "*Find*") "Work")
     ((starts-with (buffer-name) "*grep*") "Work")
+    ((starts-with (buffer-name) "*Backtrace*") "Work")
     ((starts-with (buffer-name) "*tex*") "Work")
     ((starts-with (buffer-name) "*delite*") "Work")
     ((starts-with (buffer-name) "*ELP Profiling Results*") "Work")
@@ -102,15 +103,15 @@
     ((starts-with (buffer-name) "*") "Auxiliary")
     ((starts-with (buffer-name) " *") "Auxiliary")
     (t "Work")
-    )))) 
+    ))))
 
 ;; courtesy of yswzing from http://www.emacswiki.org/emacs-se/TabBarMode
 (defadvice tabbar-buffer-tab-label (after fixup_tab_label_space_and_flag activate)
   (setq ad-return-value
-	  (if (and (buffer-modified-p (tabbar-tab-value tab))
-		         (buffer-file-name (tabbar-tab-value tab)))
-	    (concat "*" ad-return-value)
-      ad-return-value))) 
+    (if (and (buffer-modified-p (tabbar-tab-value tab))
+             (buffer-file-name (tabbar-tab-value tab)))
+      (concat "*" ad-return-value)
+      ad-return-value)))
 (defun ztl-modification-state-change () (tabbar-set-template tabbar-current-tabset nil) (tabbar-display-update))
 (defun ztl-on-buffer-modification () (set-buffer-modified-p t) (ztl-modification-state-change))
 (add-hook 'after-save-hook 'ztl-modification-state-change)

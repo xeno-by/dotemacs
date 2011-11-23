@@ -2,7 +2,27 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("gen synthetic stuff for case classes"
+(("defdef, valdef, typedef"
+ (filename . "c:/cygwin/home/xeno_by/Projects/Kepler/src/library/scala/reflect/api/Trees.scala")
+ (front-context-string . "class DefDef(mod")
+ (rear-context-string . "n.\n   */\n  case ")
+ (position . 12210))
+("typedDefDef"
+ (filename . "c:/cygwin/home/xeno_by/Projects/Kepler/src/compiler/scala/tools/nsc/typechecker/Typers.scala")
+ (front-context-string . "   def typedDefD")
+ (rear-context-string . "   ...\n     */\n ")
+ (position . 75366))
+("begin typed1"
+ (filename . "c:/cygwin/home/xeno_by/Projects/Kepler/src/compiler/scala/tools/nsc/typechecker/Typers.scala")
+ (front-context-string . "// begin typed1\n")
+ (rear-context-string . "e, tpe))\n\n      ")
+ (position . 182945))
+("unclear stuff about LAZY"
+ (filename . "c:/cygwin/home/xeno_by/Projects/Kepler/src/compiler/scala/tools/nsc/ast/parser/Parsers.scala")
+ (front-context-string . "\n        if (!(m")
+ (rear-context-string . "     val defs = ")
+ (position . 103786))
+("gen synthetic stuff for case classes"
  (filename . "c:/cygwin/home/xeno_by/Projects/Kepler/src/compiler/scala/tools/nsc/typechecker/Namers.scala")
  (front-context-string . "ass\n     *   cas")
  (rear-context-string . " Given a case cl")
