@@ -33,48 +33,42 @@
       (next-error-follow-minor-mode 1))))))
 
 (defadvice compilation-find-file (around customize-compilation-find-file activate)
-  (message "hey yo")
   ;; xeno.by: arguable, though useful
   (when (not (sole-window)) (delete-window))
 
   (let ((marker (ad-get-arg 0)))
-  (let ((filename (ad-get-arg 1)))
+  (let ((filename (solution-unabbrev-string (ad-get-arg 1))))
   (let ((directory (ad-get-arg 2)))
     (if (file-exists-p filename)
       (progn
-        ad-do-it)
+        (let ((new-filename (file-name-nondirectory filename)))
+        (let ((new-directory (file-name-directory filename)))
+        (ad-set-arg 1 new-filename)
+        (ad-set-arg 2 new-directory)
+        ad-do-it)))
       (progn
-        (let ((filename (solution-unabbrev-string filename)))
-        (if (file-exists-p filename)
+        (if (file-name-directory filename)
           (progn
-            (let ((new-filename (file-name-nondirectory filename)))
-            (let ((new-directory (file-name-directory filename)))
-            (ad-set-arg 1 new-filename)
-            (ad-set-arg 2 new-directory)
-            ad-do-it)))
+            ad-do-it)
           (progn
-            (if (file-name-directory filename)
-              (progn
+            (let ((matches (solution-abbrevd-files filename)))
+            (cond
+              ((equal (length matches) 0)
                 ad-do-it)
-              (progn
-                (let ((matches (solution-abbrevd-files filename)))
-                (cond
-                 ((equal (length matches) 0)
-                   ad-do-it)
-                 ((equal (length matches) 1)
-                   (let ((filename (solution-unabbrev-string (car matches))))
-                   (let ((new-filename (file-name-nondirectory filename)))
-                   (let ((new-directory (file-name-directory filename)))
-                   (ad-set-arg 1 new-filename)
-                   (ad-set-arg 2 new-directory)
-                   ad-do-it))))
-                 (t
-                   (let ((filename (solution-unabbrev-string (ido-completing-read (concat "Find this " compilation-error " in: ") matches nil t))))
-                   (let ((new-filename (file-name-nondirectory filename)))
-                   (let ((new-directory (file-name-directory filename)))
-                   (ad-set-arg 1 new-filename)
-                   (ad-set-arg 2 new-directory)
-                   ad-do-it)))))))))))))))))
+              ((equal (length matches) 1)
+                (let ((filename (solution-unabbrev-string (car matches))))
+                (let ((new-filename (file-name-nondirectory filename)))
+                (let ((new-directory (file-name-directory filename)))
+                (ad-set-arg 1 new-filename)
+                (ad-set-arg 2 new-directory)
+                ad-do-it))))
+              (t
+                (let ((filename (solution-unabbrev-string (ido-completing-read (concat "Find this " compilation-error " in: ") matches nil t))))
+                (let ((new-filename (file-name-nondirectory filename)))
+                (let ((new-directory (file-name-directory filename)))
+                (ad-set-arg 1 new-filename)
+                (ad-set-arg 2 new-directory)
+                ad-do-it))))))))))))))
 
 ;; courtesy of Trey Jackson, modified by xeno.by
 ;; http://stackoverflow.com/questions/2299133/emacs-grep-find-link-in-same-window

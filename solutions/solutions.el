@@ -41,12 +41,10 @@
   (find-files-in-solution-command filter))
 
 (defun solution-abbrev-string (string)
-  (when windows
-    (let ((cygroot (replace-regexp-in-string "\\\\" "/" (getenv "CYGROOT"))))
-    (if (starts-with string cygroot)
-      (setq string (substring string (length cygroot))))))
+  (setq string (replace-regexp-in-string "\\\\" "/" string))
+  (setq string (file-truename string))
 
-  (let ((abbrevs (mapcar (lambda (project) (list (concat "/" (project-name (car project))) (project-path (car project)))) projects)))
+  (let ((abbrevs (mapcar (lambda (project) (list (concat "/" (project-name (car project))) (file-truename (project-path (car project))))) projects)))
     (mapc (lambda (abbrev)
       (let ((short (car abbrev)))
       (let ((expanded (cadr abbrev)))
@@ -55,7 +53,10 @@
   string)
 
 (defun solution-unabbrev-string (string)
-  (let ((abbrevs (mapcar (lambda (project) (list (concat "/" (project-name (car project))) (project-path (car project)))) projects)))
+  (setq string (replace-regexp-in-string "\\\\" "/" string))
+  (if (not (starts-with string "/")) (setq string (solution-abbrev-string string)))
+
+  (let ((abbrevs (mapcar (lambda (project) (list (concat "/" (project-name (car project))) (file-truename (project-path (car project))))) projects)))
     (mapc (lambda (abbrev)
       (let ((short (car abbrev)))
       (let ((expanded (cadr abbrev)))
