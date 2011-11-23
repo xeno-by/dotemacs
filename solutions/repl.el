@@ -1,5 +1,5 @@
 (global-set-key (kbd "C-S-r") (lambda ()
   (interactive)
-  (if (fboundp 'my-run-project)
-    (my-run-project (current-buffer))
-    (message "my-run-project is not implemented"))))
+  (if (fboundp 'my-repl-project)
+    (my-repl-project (current-buffer))
+    (message "my-repl-project is not implemented"))))
