@@ -50,18 +50,6 @@
     (set (make-local-variable 'compilation-error-regexp-alist)
          '(("^\\[error\\] \\([_.a-zA-Z0-9 :\\\\/-]+[.]scala\\):\\([0-9]+\\):"
             1 2 nil 2 nil)))
-    (set (make-local-variable 'compilation-mode-font-lock-keywords)
-         '(("^\\[error\\] Error running compile:"
-            (0 compilation-error-face))
-           ("^.*\\*\\*\\* FAILED \\*\\*\\*"
-            (0 compilation-error-face))
-           ("^\\[warn\\][^\n]*"
-            (0 compilation-warning-face))
-           ("^\\(\\[info\\]\\)\\([^\n]*\\)"
-            (0 compilation-info-face)
-            (1 compilation-line-face))
-           ("^\\[success\\][^\n]*"
-            (0 compilation-info-face))))
     (compilation-shell-minor-mode t)
 
     (defvar myke-minor-mode-map (make-keymap) "myke-minor-mode keymap.")
@@ -97,8 +85,7 @@
 
     (set (make-local-variable 'after-change-functions) '((lambda (start stop prev-length)
       (let ((content (buffer-substring-no-properties (point-min) (point-max))))
-      (when (and (string-match "Process myke finished" content)
-                 (not (string-match "\\[error\\]" content)))
+      (when (string-match (concat "Process " (myke-command) " finished") content)
         (cond
           ((string= (myke-command) "compile") (bury-buffer))
           ((string= (myke-command) "rebuild") (bury-buffer))
@@ -110,9 +97,23 @@
           ((string= (myke-command) "logthis") (bury-buffer))
           ((string= (myke-command) "pull") ())
           ((string= (myke-command) "push") ())
+          (t (error (concat "unsupported command " (myke-command))))))
+      (when (string-match (concat "Process " (myke-command) " exited abnormally") content)
+        (cond
+          ((string= (myke-command) "compile") ())
+          ((string= (myke-command) "rebuild") ())
+          ((string= (myke-command) "run") ())
+          ((string= (myke-command) "repl") ())
+          ((string= (myke-command) "test") ())
+          ((string= (myke-command) "commit") ())
+          ((string= (myke-command) "logall") ())
+          ((string= (myke-command) "logthis") ())
+          ((string= (myke-command) "pull") ())
+          ((string= (myke-command) "push") ())
           (t (error (concat "unsupported command " (myke-command))))))))))
 
-    (comint-exec (current-buffer) (myke-command) "myke" nil (list "/v" (myke-command) target))))))
+    ;; (comint-exec (current-buffer) (myke-command) "myke" nil (list "/v" (myke-command) target))))))
+    (comint-exec (current-buffer) (myke-command) "myke" nil (list (myke-command) target))))))
 
 (defadvice recompile (around override-recompile-for-sbt activate)
   (if (myke-command)

@@ -3,7 +3,10 @@
 
 ;; unfortunately, linum slows down scrolling considerably
 (global-linum-mode 1)
-(add-hook 'find-file-hook (lambda () (if (not (equal major-mode 'doc-view-mode)) (linum-mode 1))))
+(add-hook 'find-file-hook (lambda ()
+  (if (and (not (equal major-mode 'doc-view-mode))
+           (not (and (fboundp 'myke-command) (myke-command))))
+    (linum-mode 1))))
 (global-set-key (kbd "C-l") 'goto-line)
 
 (global-set-key (kbd "<home>") 'beginning-of-visual-line)
