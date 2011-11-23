@@ -1,6 +1,7 @@
 (setq line-number-mode t)
 (setq column-number-mode t)
 
+;; causes a SIGNIFICANT performance hit on large files, but is useful anyways
 ;;(global-linum-mode 1)
 (add-hook 'find-file-hook (lambda ()
   (if (and (not (equal major-mode 'doc-view-mode))
