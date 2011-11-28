@@ -1,0 +1,6 @@
+(add-project "library" "/home/xeno_by/Projects/ScalaSVN/src/library/scala" nil)
+(add-project "compiler" "/home/xeno_by/Projects/ScalaSVN/src/compiler/scala" nil)
+;;(add-project "playground-internal" "/home/xeno_by/Projects/ScalaSVN/test/files" nil)
+;;(add-project "playground-external" "/home/xeno_by/Projects/Reflection/src" nil)
+(add-project "desktop" "/media/XENO/Dropbox/Software/Emacs/desktops/trunk" nil)
+(add-project ".emacs" "/media/XENO/Dropbox/Software/Emacs" nil)
