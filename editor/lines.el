@@ -8,6 +8,7 @@
            (not (and (fboundp 'myke-command) (myke-command))))
     (linum-mode 1))))
 (global-set-key (kbd "C-l") 'goto-line)
+(global-set-key (kbd "C-g") 'goto-line)
 
 (global-set-key (kbd "<home>") 'beginning-of-visual-line)
 (global-set-key (kbd "<end>") 'end-of-visual-line)
