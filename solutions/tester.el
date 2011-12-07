@@ -3,9 +3,3 @@
   (if (fboundp 'my-run-test-project)
     (my-test-project (current-buffer))
     (message "my-run-test-project is not implemented"))))
-
-(global-set-key (kbd "<M-S-return>") (lambda ()
-  (interactive)
-  (if (fboundp 'my-compile-test-project)
-    (my-test-project (current-buffer))
-    (message "my-compile-test-project is not implemented"))))
