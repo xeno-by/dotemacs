@@ -6,6 +6,12 @@
     (my-compile-project (current-buffer))
     (message "my-compile-project is not implemented"))))
 
+(global-set-key (kbd "<C-Del>") (lambda ()
+  (interactive)
+  (if (fboundp 'my-clean-project)
+    (my-clean-project (current-buffer))
+    (message "my-clean-project is not implemented"))))
+
 ;; sorry, one more core emacs hotkey redefined...
 (define-prefix-command 'my-compile-map)
 (global-set-key (kbd "M-b") 'my-compile-map)
