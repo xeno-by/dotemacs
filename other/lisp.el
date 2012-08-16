@@ -40,8 +40,8 @@
         (let ((current-window (frame-selected-window current-frame)))
           (set-window-buffer current-window buffer)))))))
 
-(global-set-key (kbd "C-.") (lambda () 
-  (interactive) 
+(global-set-key (kbd "C-.") (lambda ()
+  (interactive)
   (let ((bookmark (my-bookmark-set)))
     (if (not (boundp 'goto-definition-bookmark-stack)) (setq goto-definition-bookmark-stack ()))
     (setq goto-definition-bookmark-stack (cons bookmark goto-definition-bookmark-stack)))
@@ -85,3 +85,8 @@
 (add-hook 'auto-save-hook 'save-ielm-history)
 (add-to-list 'kill-emacs-query-functions (lambda () (save-ielm-history) t))
 
+;; todo. crossplatformize this!
+(setq inferior-lisp-program (concat emacs-root "/xplatform/windows/sbcl.exe"))
+(add-to-list 'load-path (concat emacs-root "/libraries/slime-2012-06-29"))
+(require 'slime)
+(slime-setup)
